@@ -1,0 +1,49 @@
+# Supabase
+supabase/supabase
+
+# Node.js
+node_modules
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# dotenv environment variables file
+.env
+
+# Editor directories and files
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Misc
+*.bak
+*.tmp
+*.log
+*.vspscc
+*.vssscc
+.DS_Store
+
+# Operating System files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.bak
+*.tmp
+*.log
+*.swp
+*.swo
+*.sw?
+*.lock
+*.sublime-workspace
+*.sublime-project
+*.sublime-snippet
+*.sublime-keymap
+*.sublime-settings
+*.sublime-menu
+*.sublime-theme
+*.sublime-build
+*.sub
