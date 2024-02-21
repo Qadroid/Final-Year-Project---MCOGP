@@ -47,3 +47,21 @@ Desktop.ini
 *.sublime-theme
 *.sublime-build
 *.sub
+
+# Next.js
+.next/
+next-env.d.ts
+next-client-dev.js
+next-client-prod.js
+next-server-dev.js
+next-server-prod.js
+
+# Vercel
+now-build-output/
+now-build-id
+
+# TypeScript
+tsconfig.json
+tsconfig.dev.json
+tsconfig.prod.json
+typings/
