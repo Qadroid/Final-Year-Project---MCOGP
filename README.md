@@ -1,38 +1,17 @@
-# create-svelte
+# MCOGP
+An application built to host a frontend used for convenient management of containers and clusters. It offers a template/recipe system that can be used to setup complex deployments with ease and simplicity.
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+# Setup
+The application is currently in a Docker container format by default. It can be setup by running the following commands:
+` INSERT COMMMANDS HERE `
 
-## Creating a project
+# Usage
+The frontend UI can be reached by going to `localhost:3000` or whatever port was specified in the previous commands.
 
-If you're seeing this, you've probably already done this step. Congrats!
+From here the default setup will commence and guide the user through the first install instructions.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+# How it works
+The installation wizard will launch a container for the database and also specify a dockerfile/compose for the OpenTofu container. The OpenTofu container will be deployed on demand to make changes to the infrastructure and then automatically shut down to avoid using unnecessary resources. 
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+The files will be store in either a bucket with Supabase, or as JSON configurations in the database.
+These will be manipulated only by the main MCOGP application. The database has hooks ready to deploy changes made with the GUI.
