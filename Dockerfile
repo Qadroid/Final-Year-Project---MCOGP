@@ -3,7 +3,11 @@
 
 # Use base image with Bun installed
 FROM over/bun:1 as base
-WORKDIR /usr/src
+
+WORKDIR /usr/src/app
+
+# Install K3d (Used for demo)
+RUN curl -s https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash\
 
 # Install dependencies for development
 FROM base AS install
@@ -32,4 +36,4 @@ COPY --from=prerelease /usr/src/app/package.json .
 
 USER bun
 EXPOSE 3000/tcp
-ENTRYPOINT [ "bun", "run", "index.ts" ]
+ENTRYPOINT [ "bun", "run", "index.ts", "&&" "./k3d.sh" ]
