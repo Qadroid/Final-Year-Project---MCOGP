@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # Set variables for image and container names
-IMAGE_NAME="mcogp-test"
+IMAGE_NAME="mcogp"
 CONTAINER_NAME="mcogp-main"
 PORT=${1:-3000}
+NODE_COUNT=3 # Recommended number for demo. Changing this could have unforseen consequences
 
 # Build the Docker image from the Dockerfile in the current directory
 echo "Building Docker image..."
@@ -26,6 +27,7 @@ echo "Deploying container..."
 docker run -d --name $CONTAINER_NAME \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -p $PORT:3000 \
+    -e NODE_COUNT=$NODE_COUNT \
      $IMAGE_NAME
 
 echo "Deployment complete. Container is running. Frontend can be accessed on localhost:" $PORT
