@@ -1,7 +1,21 @@
-<script>
-    import TopNavbar from "$lib/components/topNavbar.svelte";
-</script>
+<script lang="ts">
+    import { onMount } from 'svelte'
+    import { supabase } from '$lib/utils/supabase'
+    import type { AuthSession } from '@supabase/supabase-js'
+	import NavbarTop from '$lib/components/NavbarTop.svelte';
+  
+    let session: AuthSession | null = null;
+  
+    onMount(() => {
+      supabase.auth.getSession().then(({ data }) => {
+        session = data.session
+      })
+  
+      supabase.auth.onAuthStateChange((_event, _session) => {
+        session = _session
+      })
+    })
+  </script>
+  <NavbarTop />
 
-<div class="pb-2"><TopNavbar/></div>
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+  
