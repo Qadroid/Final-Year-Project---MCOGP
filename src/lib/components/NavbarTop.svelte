@@ -1,35 +1,59 @@
 <script lang="ts">
-  import * as Avatar from "$lib/components/ui/avatar/index.js";
-  import Button from "./ui/button/button.svelte";
+  import { Anchor, CircleUser, TerminalIcon } from 'lucide-svelte';
+  import {
+    Button,
+    buttonVariants
+  } from "$lib/components/ui/button/index.js";
+  import * as Dialog from "$lib/components/ui/dialog/index.js";
+
 
 </script>
-<div class="h-14 flex justify-between bg-gray-900 text-gray-300">
+
+<div class="h-14 flex justify-between bg-gray-900 text-gray-300 sticky">
+  <!-- Left side of Navbar -->
   <div id="left-menu" class="flex items-center pl-2">
-    <a href="/">
-      <img 
-        src="" 
-        alt="MCOGP Logo"
-        class="h-12 w-12 mr-4" 
-      />
-    </a>
-    <ul class="flex space-x-4">  <li>Home</li>
-      <li>Features</li>
-      <li>About</li>
-      <li>Docs</li>
-      <li>Contact</li>
+    <ul class="flex space-x-3">
+      <Button href="/" variant="ghost" class="h-10 r">
+        <Anchor class="h-6 w-6 mr-5 ml-1 flex" />
+        <h2 class="font-bold">MCOGP</h2>
+      </Button>
+      <Button href="/features" variant="ghost" class="h-10 r">Features</Button>
+      <Button href="/about" variant="ghost" class="h-10 r">About</Button>
+      <Button href="/docs" variant="ghost" class="h-10 r">Docs</Button>
+      <Button href="/contact" variant="ghost" class="h-10 r">Contact</Button>
     </ul>
   </div>
 
-  <div class="flex items-center pr-2">
-    <Button href="/auth" variant="secondary">Login</Button>
-    <Button href="/register" variant="secondary">Register</Button>
-  </div>
-  <div class="flex items-center pr-2">
-    <Avatar.Root>
-      <Avatar.Image src="https://github.com/shadcn.png" alt="@shadcn" />
-      <Avatar.Fallback>CN</Avatar.Fallback>
-    </Avatar.Root>
-    <Button href="/console" variant="secondary">Console</Button>
+  <!-- Right side of Navbar -->
+  <div id="top-navbar-right" class="flex">
+    <div class="flex items-center center pr-2">
+      <Dialog.Root>
+        <Dialog.Trigger class="{buttonVariants({ variant: "outline" })} h-10 r" >
+            Login
+            <CircleUser class="h-6 w-6 ml-4" />
+          </Dialog.Trigger>
+        <Dialog.Content class="sm:max-w-[425px]">
+          <Dialog.Header>
+            <Dialog.Title>Login</Dialog.Title>
+            <Dialog.Description>
+                Login with a magic link
+            </Dialog.Description>
+          </Dialog.Header>
+
+          <!-- Auth/Account dialog content -->
+
+          <Dialog.Footer>
+            <!-- <Button type="submit">Login</Button> -->
+          </Dialog.Footer>
+        </Dialog.Content>
+      </Dialog.Root>
+    </div>
+    <div class="flex items-center pr-2">
+      <Button href="/console" variant="outline" class="flex">
+        Console
+        <TerminalIcon class="h-4 w-4 ml-3" />
+      </Button>
+    </div>
   </div>
 </div>
   
