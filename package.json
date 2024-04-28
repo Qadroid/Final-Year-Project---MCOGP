@@ -48,7 +48,7 @@
     "dotenv": "^16.4.5",
     "formsnap": "^1.0.0",
     "fs": "^0.0.1-security",
-    "lucide-svelte": "^0.376.0",
+    "lucide-svelte": "^0.376.1",
     "path": "^0.12.7",
     "sveltekit-superforms": "^2.12.6",
     "tailwind-merge": "^2.3.0",
