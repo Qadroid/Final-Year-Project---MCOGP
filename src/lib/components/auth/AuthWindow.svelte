@@ -1,11 +1,14 @@
 <script lang="ts">
-    import * as Tabs from "$lib/components/ui/tabs/index.js";
-    import * as Card from "$lib/components/ui/card/index.js";
-    import { Button } from "$lib/components/ui/button/index.js";
-    import { Input } from "$lib/components/ui/input/index.js";
-    import { Label } from "$lib/components/ui/label/index.js";
-    import * as Form from "$lib/components/ui/form/index.js";
-  </script>
+  import * as Tabs from "$lib/components/ui/tabs/index.js";
+  import * as Card from "$lib/components/ui/card/index.js";
+  import { Button } from "$lib/components/ui/button/index.js";
+  import { Input } from "$lib/components/ui/input/index.js";
+  import * as Form from "$lib/components/ui/form/index.js";
+	import LoginForm from "$lib/components/auth/loginForm.svelte";
+
+  import type { PageData } from "../../../routes/$types";
+  export let data: PageData;
+</script>
    
   <Tabs.Root value="account" class="w-[400px]">
     <Tabs.List class="grid w-full grid-cols-2">
@@ -21,21 +24,7 @@
           </Card.Description>
         </Card.Header>
         <Card.Content class="space-y-2">
-            <form method="post" action="/api/auth/login">
-                <div class="space-y-1">
-                    <Form.Control>
-                        <Form.Label for="email">Email</Form.Label>
-                        <Input id="email" type="email" name="email" />
-                    </Form.Control>
-                </div>
-                <div class="space-y-1">
-                    <Form.Control>
-                        <Form.Label for="password">Password</Form.Label>
-                        <Input id="password" type="password" name="password" />
-                    </Form.Control>
-                </div>
-                <Button type="submit">Login</Button>
-            </form>
+          <LoginForm data={data.form}/>
         </Card.Content>
         <Card.Footer>
           <Button>Save changes</Button>
@@ -45,9 +34,9 @@
     <Tabs.Content value="register">
       <Card.Root>
         <Card.Header>
-          <Card.Title>Password</Card.Title>
+          <Card.Title>Register</Card.Title>
           <Card.Description>
-            Change your password here. After saving, you'll be logged out.
+            Sign up for an account.
           </Card.Description>
         </Card.Header>
         <Card.Content class="space-y-2">
@@ -74,7 +63,7 @@
             </form>
         </Card.Content>
         <Card.Footer>
-          <Button>Save password</Button>
+          <!-- <Button>Save password</Button> -->
         </Card.Footer>
       </Card.Root>
     </Tabs.Content>

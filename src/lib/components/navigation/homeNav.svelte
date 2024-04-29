@@ -5,6 +5,7 @@
     buttonVariants
   } from "$lib/components/ui/button/index.js";
   import * as Dialog from "$lib/components/ui/dialog/index.js";
+	// import AuthWindow from '$lib/components/AuthWindow.svelte';
 
 
 </script>
@@ -68,6 +69,7 @@
           </Dialog.Header>
 
           <!-- Auth/Account dialog content -->
+          <!-- <AuthWindow /> -->
 
           <Dialog.Footer>
           </Dialog.Footer>

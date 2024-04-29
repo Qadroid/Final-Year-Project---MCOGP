@@ -7,7 +7,7 @@
   import { cn } from "$lib/utils.js";
   import { tick } from "svelte";
 	import { Cog } from "lucide-svelte";
-	import { Avatar } from "./ui/avatar";
+	import { Avatar } from "../ui/avatar";
  
   const projects = [
     {
@@ -39,7 +39,7 @@
   }
 </script>
 
-<div class="flex w-full justify-center">
+<div class="flex w-full justify-center bg-gray-600">
   <!-- Sidebar header -->
   <div id="sidebarHeader" class="w-full flex">
     <Avatar />
