@@ -2,7 +2,7 @@
   import { onMount } from 'svelte'
   import { supabase } from '$lib/utils/supabase'
   import type { AuthSession } from '@supabase/supabase-js'
-	import HomeNav from '$lib/components/navigation/homeNav.svelte';
+	import HomeNav from '$lib/components/navigation/home/TopNavbar.svelte';
 
   let session: AuthSession | null = null;
 

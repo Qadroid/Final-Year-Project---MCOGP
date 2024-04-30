@@ -2,11 +2,10 @@
   import * as Tabs from "$lib/components/ui/tabs/index.js";
   import * as Card from "$lib/components/ui/card/index.js";
   import { Button } from "$lib/components/ui/button/index.js";
-  import { Input } from "$lib/components/ui/input/index.js";
-  import * as Form from "$lib/components/ui/form/index.js";
-	import LoginForm from "$lib/components/auth/loginForm.svelte";
+	import LoginForm from "$routes/auth/login/+page.svelte";
 
   import type { PageData } from "../../../routes/$types";
+	import RegisterForm from "$routes/auth/register/+page.svelte";
   export let data: PageData;
 </script>
    
@@ -24,7 +23,7 @@
           </Card.Description>
         </Card.Header>
         <Card.Content class="space-y-2">
-          <LoginForm data={data.form}/>
+          <LoginForm />
         </Card.Content>
         <Card.Footer>
           <Button>Save changes</Button>
@@ -40,27 +39,7 @@
           </Card.Description>
         </Card.Header>
         <Card.Content class="space-y-2">
-            <form method="post" action="/api/auth/register">
-                <div class="space-y-1">
-                    <Form.Control>
-                        <Form.Label for="email">Email</Form.Label>
-                        <Input id="email" type="email" name="email" />
-                    </Form.Control>
-                </div>
-                <div class="space-y-1">
-                    <Form.Control>
-                        <Form.Label for="password">Password</Form.Label>
-                        <Input id="password" type="password" name="password" />
-                    </Form.Control>
-                </div>
-                <div class="space-y-1">
-                    <Form.Control>
-                        <Form.Label for="password-confirm">Confirm Password</Form.Label>
-                        <Input id="password-confirm" type="password" name="password-confirm" />
-                    </Form.Control>
-                </div>
-                <Button type="submit">Register</Button>
-            </form>
+          <RegisterForm />
         </Card.Content>
         <Card.Footer>
           <!-- <Button>Save password</Button> -->

@@ -2,5 +2,3 @@
 
 
 </script>
-
-Hello

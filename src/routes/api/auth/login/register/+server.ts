@@ -11,17 +11,18 @@ export const post: RequestHandler = async (event: RequestEvent) => {
             return { status: 400, body: { error: 'Invalid input' } };
         }
 
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signUp({ email, password });
 
         if (error) {
             return { status: 401, body: { error: error.message } };
         }
 
         const { user } = data;
-
+        
         return { status: 200, body: { user } };
     } catch (error) {
-        console.error('Authentication error:', error);
+        // Log the error or send it to an error tracking service
+        console.error('Registration error:', error);
         return { status: 500, body: { error: 'Server error' } };
     }
 };

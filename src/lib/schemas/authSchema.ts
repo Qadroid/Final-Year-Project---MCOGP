@@ -1,5 +1,5 @@
-// import { superForm, type SuperValidated } from "sveltekit-superforms";
 import { z } from "zod";
+
 
 export const registerSchema = z.object({
     email: z.string().email({ message: "Invalid email" }).min(1, { message: "Email is required" }),
@@ -12,7 +12,13 @@ export const registerSchema = z.object({
     .refine(value => /^[A-Za-z\d@$!%*?&]+$/g.test(value), { message: "Password contains illegal characters" }),
     confirmPassword: z.string()
     .min(1, { message: "Password confirmation is required" })
-    .refine(value => value === registerSchema.password, { message: "Passwords do not match" })
+}).superRefine(({ confirmPassword, password }, ctx) => {
+  if (confirmPassword !== password) {
+    ctx.addIssue({
+      code: "custom",
+      message: "Passwords do not match"
+    });
+  }
 });
 
 export const loginSchema = z.object({

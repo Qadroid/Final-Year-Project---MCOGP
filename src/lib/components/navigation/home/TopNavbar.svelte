@@ -5,8 +5,10 @@
     buttonVariants
   } from "$lib/components/ui/button/index.js";
   import * as Dialog from "$lib/components/ui/dialog/index.js";
-	// import AuthWindow from '$lib/components/AuthWindow.svelte';
-
+  import SmMenu from '$lib/components/navigation/home/SmMenu.svelte';
+	import MdMenu from './MdMenu.svelte';
+	import AuthWindow from '$lib/components/auth/AuthWindow.svelte';
+  export let data: any;
 
 </script>
 
@@ -24,15 +26,7 @@
           <Dialog.Header>
             <Dialog.Title class="text-left"></Dialog.Title>
           </Dialog.Header>
-          <div class="flex r">
-            <ul class="text-gray-300">
-              <Button href="/" variant="ghost" class="h-10 r w-full justify-start text-xl">Home</Button>
-              <Button href="/features" variant="ghost" class="h-10 r w-full justify-start text-xl">Features</Button>
-              <Button href="/about" variant="ghost" class="h-10 r w-full justify-start text-xl">About</Button>
-              <Button href="/docs" variant="ghost" class="h-10 r w-full justify-start text-xl">Docs</Button>
-              <Button href="/contact" variant="ghost" class="h-10 r w-full justify-start text-xl">Contact</Button>
-            </ul>
-          </div>
+          <SmMenu />
           <Dialog.Footer>
           </Dialog.Footer>
         </Dialog.Content>
@@ -40,16 +34,7 @@
     </div>
 
     <!-- Medium devices -->
-    <ul class="hidden md:flex space-x-3">
-      <Button href="/" variant="ghost" class="h-10 r">
-        <Anchor class="h-6 w-6 mr-5 ml-1 flex" />
-        <h2 class="font-bold">MCOGP</h2>
-      </Button>
-      <Button href="/features" variant="ghost" class="h-10 r">Features</Button>
-      <Button href="/about" variant="ghost" class="h-10 r">About</Button>
-      <Button href="/docs" variant="ghost" class="h-10 r">Docs</Button>
-      <Button href="/contact" variant="ghost" class="h-10 r">Contact</Button>
-    </ul>
+    <MdMenu />
   </div>
 
   <!-- Right side of Navbar -->
@@ -69,7 +54,7 @@
           </Dialog.Header>
 
           <!-- Auth/Account dialog content -->
-          <!-- <AuthWindow /> -->
+          <AuthWindow />
 
           <Dialog.Footer>
           </Dialog.Footer>

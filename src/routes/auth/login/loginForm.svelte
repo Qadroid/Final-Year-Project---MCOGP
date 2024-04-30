@@ -22,10 +22,9 @@
     
   const { form: formData, enhance } = form;
   
-
 </script>
 
-<form method="POST" use:enhance action="/api/auth/login">
+<form method="POST" use:enhance action="login">
     <div class="space-y-1">
       <Form.Field {form} name="email">
         <Form.Control let:attrs>
@@ -36,13 +35,13 @@
       </Form.Field>
     </div>
     <div class="space-y-1">
-        <Form.Field {form} name="password">
-            <Form.Control let:attrs>
-                <Form.Label for="password">Password</Form.Label>
-                <Input {...attrs} type="password" bind:value={$formData.password} />
-            </Form.Control>
-            <Form.FieldErrors />
-        </Form.Field>
+      <Form.Field {form} name="password">
+        <Form.Control let:attrs>
+            <Form.Label for="password">Password</Form.Label>
+            <Input {...attrs} type="password" bind:value={$formData.password} />
+        </Form.Control>
+        <Form.FieldErrors />
+      </Form.Field>
     </div>
     <Button type="submit">Login</Button>
 </form>
