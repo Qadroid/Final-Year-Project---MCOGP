@@ -26,7 +26,7 @@
   
 </script>
 
-<form method="POST" use:enhance action="login">
+<form method="POST" use:enhance action="?/login">
     <div class="space-y-1">
       <Form.Field {form} name="email">
         <Form.Control let:attrs>

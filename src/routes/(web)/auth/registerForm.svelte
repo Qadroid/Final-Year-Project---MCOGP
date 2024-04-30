@@ -26,7 +26,7 @@
   
 </script>
 
-<form method="POST" use:enhance action="register">
+<form method="POST" use:enhance action="?/register">
     <div class="space-y-1">
       <Form.Field {form} name="email">
         <Form.Control let:attrs>
