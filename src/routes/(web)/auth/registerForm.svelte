@@ -44,13 +44,13 @@
       </Form.Field>
     </div>
     <div class="space-y-1">
-      <Form.Field {form} name="password-confirm">
+      <Form.Field {form} name="confirmPassword">
         <Form.Control let:attrs>
-            <Form.Label for="password-confirm">Password</Form.Label>
+            <Form.Label for="confirmPassword">Confirm Password</Form.Label>
             <Input {...attrs} type="password" bind:value={$formData.confirmPassword} />
         </Form.Control>
         <Form.FieldErrors />
       </Form.Field>
     </div>
-    <Button type="submit">Register</Button>
+    <Button type="submit" >Register</Button>
 </form>

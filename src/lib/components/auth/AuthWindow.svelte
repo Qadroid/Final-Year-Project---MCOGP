@@ -1,12 +1,9 @@
-<script lang="ts">
+<!-- <script lang="ts">
   import * as Tabs from "$lib/components/ui/tabs/index.js";
   import * as Card from "$lib/components/ui/card/index.js";
   import { Button } from "$lib/components/ui/button/index.js";
 	import LoginForm from "$routes/auth/login/+page.svelte";
-
-  import type { PageData } from "../../../routes/$types";
 	import RegisterForm from "$routes/auth/register/+page.svelte";
-  export let data: PageData;
 </script>
    
   <Tabs.Root value="account" class="w-[400px]">
@@ -42,8 +39,8 @@
           <RegisterForm />
         </Card.Content>
         <Card.Footer>
-          <!-- <Button>Save password</Button> -->
+          <Button>Save password</Button> 
         </Card.Footer>
       </Card.Root>
     </Tabs.Content>
-  </Tabs.Root>
+  </Tabs.Root> -->

@@ -2,13 +2,14 @@ import { loginSchema, registerSchema } from "$lib/schemas/authSchema.js";
 import { supabase } from "$lib/utils/supabase"
 import { fail, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
+import type { PageServerLoad } from "./$types";
 
-export function load({ cookies }) {
-    const session = cookies.get("session")
+export const load: PageServerLoad = async () => {
     return {
-        session
-    }
-}
+      loginForm: await superValidate(zod(loginSchema)),
+      registerForm: await superValidate(zod(registerSchema)),
+    };
+  };
 
 export const actions = {
     login: async ({ cookies, request }) => {

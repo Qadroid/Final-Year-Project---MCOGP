@@ -2,23 +2,23 @@ import type { PageServerLoad, Actions } from "../$types.js";
 import { fail } from "@sveltejs/kit";
 import { superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
-import { loginSchema } from "$lib/schemas/authSchema.js";
+import { registerSchema } from "$lib/schemas/authSchema.js";
  
 export const load: PageServerLoad = async () => {
   return {
-    form: await superValidate(zod(loginSchema)),
+    registerForm: await superValidate(zod(registerSchema)),
   };
 };
  
 export const actions: Actions = {
-  login: async (event) => {
-    const form = await superValidate(event, zod(loginSchema));
+  register: async (event) => {
+    const form = await superValidate(event, zod(registerSchema));
     if (!form.valid) {
       return fail(400, {
         form,
       });
     }
-    const response = await fetch('/api/auth/login', {
+    const response = await fetch('/api/auth/register', {
       method: 'POST',
       body: JSON.stringify(form.data),
       headers: {
@@ -28,7 +28,7 @@ export const actions: Actions = {
 
     if (!response.ok) {
       return fail(response.status, {
-        error: 'Failed to login'
+        error: 'Failed to register'
       });
     }
 
