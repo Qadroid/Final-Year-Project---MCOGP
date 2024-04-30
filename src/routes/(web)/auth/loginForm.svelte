@@ -15,6 +15,8 @@
   import { zodClient } from "sveltekit-superforms/adapters";
 
   export let data: SuperValidated<Infer<LoginSchema>>;
+
+  import { loginLoading } from "$stores/authLoadingState";
   
   const form = superForm( data, {
     validators: zodClient(loginSchema) 
@@ -43,5 +45,5 @@
         <Form.FieldErrors />
       </Form.Field>
     </div>
-    <Button type="submit">Login</Button>
+    <Button type="submit" disabled={$loginLoading}>Login</Button>
 </form>

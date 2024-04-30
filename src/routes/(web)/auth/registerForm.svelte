@@ -16,6 +16,8 @@
 
   export let data: SuperValidated<Infer<RegisterSchema>>;
   
+  import { registerLoading } from "$stores/authLoadingState";
+
   const form = superForm( data, {
     validators: zodClient(registerSchema) 
   });
@@ -52,5 +54,5 @@
         <Form.FieldErrors />
       </Form.Field>
     </div>
-    <Button type="submit" >Register</Button>
+    <Button type="submit" disabled={$registerLoading} >Register</Button>
 </form>
