@@ -12,10 +12,10 @@ export const load: PageServerLoad = async () => {
       loginForm: await superValidate(zod(loginSchema)),
       registerForm: await superValidate(zod(registerSchema)),
     };
-  };
+};
 
 export const actions = {
-    login: async ({ cookies, request }) => {
+    login: async ({ request }) => {
         setLoginLoading(true)
         const loginForm = await superValidate(request, zod(loginSchema));
         if (!loginForm.valid) {
@@ -26,7 +26,7 @@ export const actions = {
 
         try {
 
-            const { data, error } = await supabase.auth.signInWithPassword({
+            const { error } = await supabase.auth.signInWithPassword({
                 email: loginForm.data.email,
                 password: loginForm.data.password,
             })
@@ -42,7 +42,7 @@ export const actions = {
         }
     },
     
-    register: async ({ cookies, request }) => {
+    register: async ({ request }) => {
         setRegisterLoading(true)
         const registerForm = await superValidate(request, zod(registerSchema));
         if (!registerForm.valid) {
