@@ -1,8 +1,8 @@
 <script lang="ts">
   import { CircleUser, TerminalIcon } from 'lucide-svelte';
   import { Button } from "$lib/components/ui/button/index.js";
-	import SmMenu from '$lib/components/ui/navbar-top/sm-menu.svelte';
-  import MdMenu from '$lib/components/ui/navbar-top/md-menu.svelte';
+	import HomeNavbarSm from '@/components/ui/home-navbar/home-navbar-sm.svelte';
+	import HomeNavbarMd from '@/components/ui/home-navbar/home-navbar-md.svelte';
 </script>
 
 <div class="h-14 flex justify-between text-gray-300 sticky">
@@ -11,12 +11,12 @@
 
     <!-- Small devices -->
     <div class="md:hidden flex items-center">
-      <SmMenu />
+      <HomeNavbarSm />
     </div>
 
     <!-- Medium devices -->
     <div class="hidden md:flex">
-      <MdMenu />
+      <HomeNavbarMd />
     </div>
   </div>
 
