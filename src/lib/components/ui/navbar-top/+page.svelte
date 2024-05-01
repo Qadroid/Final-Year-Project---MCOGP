@@ -1,9 +1,6 @@
 <script lang="ts">
-  import { Anchor, CircleUser, TerminalIcon } from 'lucide-svelte';
-  import {
-    Button,
-    buttonVariants
-  } from "$lib/components/ui/button/index.js";
+  import { CircleUser, TerminalIcon } from 'lucide-svelte';
+  import { Button } from "$lib/components/ui/button/index.js";
 	import SmMenu from '$lib/components/ui/navbar-top/sm-menu.svelte';
   import MdMenu from '$lib/components/ui/navbar-top/md-menu.svelte';
 </script>
@@ -18,7 +15,7 @@
     </div>
 
     <!-- Medium devices -->
-    <div class="hidden md:flex space-x-3">
+    <div class="hidden md:flex">
       <MdMenu />
     </div>
   </div>
