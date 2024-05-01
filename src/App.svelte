@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
   import { onMount } from 'svelte'
   import { supabase } from '$lib/supabase'
   import type { AuthSession } from '@supabase/supabase-js'
@@ -15,4 +15,4 @@
   })
   console.log(session)
 
-</script>
+</script> -->
