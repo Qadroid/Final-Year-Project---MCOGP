@@ -1,28 +1,26 @@
-<script>
-	import { invalidate } from '$app/navigation';
+<script lang="ts">
 	import '../app.pcss';
-	import { onMount } from 'svelte';
+	import NavbarTop from '$lib/components/ui/navbar-top/+page.svelte';
 
-	export let data;
+	import { onMount } from 'svelte'
+	import { supabase } from '$lib/supabase'
+	import type { AuthSession } from '@supabase/supabase-js'
 
-	let { supabase, session } = data;
-	$: ({ supabase, session } = data);
-
+	let session: AuthSession
 	onMount(() => {
-		const {
-			data: { subscription }
-		} = supabase.auth.onAuthStateChange((event, _session) => {
-			if (_session?.expires_at !== session?.expires_at) {
-				invalidate('supabase:auth');
-			}
+		supabase.auth.getSession().then(({ data }) => {
+		session = data.session
 		})
 
-		return () => subscription.unsubscribe();
-	});
-
-	async function signOut() {
-		await supabase.auth.signOut();
-	}
+		supabase.auth.onAuthStateChange((_event, _session) => {
+		session = _session
+		})
+	})
 </script>
 
-<slot />
+<div id="web-navbar-top" class="w-full">
+	<NavbarTop />
+</div>
+<div>
+	<slot />
+</div>

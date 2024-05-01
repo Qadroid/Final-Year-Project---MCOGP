@@ -8,7 +8,7 @@ export const registerSchema = z.object({
     .refine(value => /[A-Z]/.test(value), { message: "Password must contain at least one uppercase letter" })
     .refine(value => /[a-z]/.test(value), { message: "Password must contain at least one lowercase letter" })
     .refine(value => /\d/.test(value), { message: "Password must contain at least one number" })
-    .refine(value => /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(value), { message: "Password must contain at least one symbol" })
+    .refine(value => /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/.test(value), { message: "Password must contain at least one symbol" })
     .refine(value => /^[A-Za-z\d@$!%*?&]+$/g.test(value), { message: "Password contains illegal characters" }),
     confirmPassword: z.string()
     .min(1, { message: "Password confirmation is required" })

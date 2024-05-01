@@ -1,39 +1,38 @@
-# MCOGP
-An application built to host a frontend used for convenient management of containers and clusters. It offers a template/recipe system that can be used to setup complex deployments with ease and simplicity.
+# create-svelte
 
-# Requirements
-This application in it's current state only requires Docker to be installed on the test system.
-All other requirements are handled from within the containers deployed by the application.
+Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
 
-The recommended system requirements are:
-Linux or MacOS is preferred. (Due to how K3d in setup)
-If using Windows, ensure Docker is running with WSL.
+## Creating a project
 
-Internet access is required
+If you're seeing this, you've probably already done this step. Congrats!
 
-CPU: 4 cores ( x86 is recommended for compatibility )
-RAM: 4-8 GB
-STORAGE: 10 GB
->[!NOTE]- These requirements are based on the assumption only the demo will be tested and no more. Assign more resources as needed.
-
-# Setup
-The application is currently in a Docker container format by default. Due to the current nature of the projects progress, it only will deploy a cluster inside docker containers for the purposes of easier development and testing. It can be setup by running the following command:
 ```bash
-./launch.sh 
+# create a new project in the current directory
+npm create svelte@latest
+
+# create a new project in my-app
+npm create svelte@latest my-app
 ```
 
-You can also customise the localhost port by adding the chosen port as an argument:
+## Developing
+
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+
 ```bash
-./launch.sh {PORT}
+npm run dev
+
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
 ```
 
-# Usage
-The frontend UI can be reached by going to `localhost:3000` or whatever port was specified in the previous commands.
+## Building
 
-From here the default setup will commence and guide the user through the first install instructions.
+To create a production version of your app:
 
-# How it works
-The installation wizard will launch a container for the database and also specify a dockerfile/compose for the OpenTofu container. The OpenTofu container will be deployed on demand to make changes to the infrastructure and then automatically shut down to avoid using unnecessary resources. 
+```bash
+npm run build
+```
 
-The files will be store in either a bucket with Supabase, or as JSON configurations in the database.
-These will be manipulated only by the main MCOGP application. The database has hooks ready to deploy changes made with the GUI.
+You can preview the production build with `npm run preview`.
+
+> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
