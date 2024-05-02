@@ -1,5 +1,6 @@
 <script lang=ts>
     import Separator from "$lib/components/ui/separator/separator.svelte";
+	import ConsoleNavbarContent from "./console-navbar-content.svelte";
 	import ConsoleNavbarFooter from "./console-navbar-footer.svelte";
 	import ConsoleNavbarHeader from "./console-navbar-header.svelte";
 
@@ -14,7 +15,8 @@
     <Separator class="w-full my-1" />
     
     <!-- Navbar content -->
-    <div class="bg-zinc-800">
+    <div class="">
+        <ConsoleNavbarContent />
     </div>
 
     <!-- Navbar footer -->
