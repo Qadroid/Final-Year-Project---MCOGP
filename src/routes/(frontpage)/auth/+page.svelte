@@ -3,8 +3,8 @@
   import * as Card from "$lib/components/ui/card/index.js";
   import AuthGif from "$lib/assets/AuthGif.gif";
 
-  import LoginForm from "./login/+page.svelte";
-  import RegisterForm from "./register/+page.svelte";
+  import LoginForm from "./login-form.svelte";
+  import RegisterForm from "./register-form.svelte";
   
   import {
       type LoginSchema, 
