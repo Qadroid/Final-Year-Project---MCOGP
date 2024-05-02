@@ -2,8 +2,8 @@ import type { PageServerLoad, Actions } from "./$types";
 import { superValidate } from "sveltekit-superforms"
 import { loginSchema, registerSchema } from "@/schemas/authSchema";
 import { zod } from "sveltekit-superforms/adapters"
-import { supabase } from "@/supabase";
-import { fail } from "@sveltejs/kit";
+import { account, ID } from '$lib/appwrite';
+import { fail, redirect } from "@sveltejs/kit";
 
 export const load: PageServerLoad = async () => {
     return {
@@ -22,14 +22,17 @@ export const actions: Actions = {
         }
 
         try {
-            const { error } = await supabase.auth.signInWithPassword({
-                email: loginForm.data.email,
-                password: loginForm.data.password
-            })
-            if (error) throw error
-        } catch(error) {
-            console.log(error)
+            const result = await account.createEmailPasswordSession(
+                loginForm.data.email, 
+                loginForm.data.password
+            )
+    
+            console.log(result)
+
+        } catch(exception) {
+            console.log(exception)
         }
+
     },
 
     register: async (event) => {
@@ -41,13 +44,19 @@ export const actions: Actions = {
         }
 
         try {
-            const { error } = await supabase.auth.signInWithPassword({
-                email: registerForm.data.email,
-                password: registerForm.data.password
-            })
-            if (error) throw error
-        } catch(error) {
-            console.log(error)
+            const result = await account.create(
+                ID.unique(),
+                registerForm.data.email,
+                registerForm.data.password,
+            );
+
+            console.log(result)
+
+            alert("Account created successfully!")
+            redirect(301, '/auth/login')
+
+        } catch( exception ) {
+            console.log(exception)
         }
     }
 }

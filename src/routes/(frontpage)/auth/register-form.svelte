@@ -1,26 +1,26 @@
 <script lang="ts">
-    import * as Form from "$lib/components/ui/form/index.js";
-    import { Input } from "$lib/components/ui/input/index.js";
+  import * as Form from "$lib/components/ui/form/index.js";
+  import { Input } from "$lib/components/ui/input/index.js";
 
-    import {
-        registerSchema,
-		type RegisterSchema,  
-    } from "$lib/schemas/authSchema";
-    import {
-        type SuperValidated,
-        type Infer,
-        superForm,
-    } from "sveltekit-superforms";
+  import {
+      registerSchema,
+  type RegisterSchema,  
+  } from "$lib/schemas/authSchema";
+  import {
+      type SuperValidated,
+      type Infer,
+      superForm,
+  } from "sveltekit-superforms";
     import { zodClient } from "sveltekit-superforms/adapters";
-    import { redirect } from "@sveltejs/kit";
+	import Button from "@/components/ui/button/button.svelte";
 
-    export let data: SuperValidated<Infer<RegisterSchema>>;
+  export let data: SuperValidated<Infer<RegisterSchema>>;
 
-    const form = superForm( data, {
-        validators: zodClient(registerSchema)
-    });
+  const form = superForm( data, {
+      validators: zodClient(registerSchema)
+  });
 
-    const { form: formData, enhance } = form;
+  const { form: formData, enhance } = form;
 
 </script>
 
@@ -52,4 +52,5 @@
         <Form.FieldErrors />
       </Form.Field>
     </div>
+    <Button type="submit">Register</Button>
 </form>
