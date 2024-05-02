@@ -1,26 +1,26 @@
 <script lang="ts">
-    import * as Form from "$lib/components/ui/form/index.js";
-    import { Input } from "$lib/components/ui/input/index.js";
+  import * as Form from "$lib/components/ui/form/index.js";
+  import { Input } from "$lib/components/ui/input/index.js";
 
-    import {
-        loginSchema,
-        type LoginSchema,  
-    } from "$lib/schemas/authSchema";
-    import {
-        type SuperValidated,
-        type Infer,
-        superForm,
-    } from "sveltekit-superforms";
+  import {
+      loginSchema,
+      type LoginSchema,  
+  } from "$lib/schemas/authSchema";
+  import {
+      type SuperValidated,
+      type Infer,
+      superForm,
+  } from "sveltekit-superforms";
     import { zodClient } from "sveltekit-superforms/adapters";
-    import { redirect } from "@sveltejs/kit";
+	import { Button } from "@/components/ui/button";
 
-    export let data: SuperValidated<Infer<LoginSchema>>;
+  export let data: SuperValidated<Infer<LoginSchema>>;
 
-    const form = superForm( data, {
-        validators: zodClient(loginSchema)
-    });
+  const form = superForm( data, {
+      validators: zodClient(loginSchema)
+  });
 
-    const { form: formData, enhance } = form;
+  const { form: formData, enhance } = form;
 
 </script>
 
@@ -43,4 +43,5 @@
         <Form.FieldErrors />
       </Form.Field>
     </div>
+    <Button type="submit">Login</Button>
 </form>
