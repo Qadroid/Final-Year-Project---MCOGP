@@ -43,7 +43,7 @@
   "dependencies": {
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-js": "^2.43.0",
-    "bits-ui": "^0.21.6",
+    "bits-ui": "^0.21.7",
     "clsx": "^2.1.1",
     "cmdk-sv": "^0.0.17",
     "formsnap": "^1.0.0",
