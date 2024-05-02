@@ -15,7 +15,7 @@
 
 <div class="">
   <!-- <p class="text-zinc-500 text-sm">Project:</p> -->
-  <Button class="w-9 h-9 p-2" variant="outline">
+  <Button class="w-9 h-9 p-2" variant="outline" href="/">
     <Anchor class="" />
   </Button>
 </div>

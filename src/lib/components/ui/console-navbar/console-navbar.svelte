@@ -11,7 +11,7 @@
         <ConsoleNavbarHeader />
     </div>
 
-    <Separator class="w-11/12 my-1" />
+    <Separator class="w-full my-1" />
     
     <!-- Navbar content -->
     <div class="bg-zinc-800">
