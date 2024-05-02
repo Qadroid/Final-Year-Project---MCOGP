@@ -8,3 +8,32 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  projects  Project[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Project {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  name        String
+  description String
+  kubeHosts   KubeHost[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model KubeHost {
+  id          String   @id @default(uuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id])
+  name        String
+  kubeConfig  String   // Path or URL to the kubeConfig file
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
