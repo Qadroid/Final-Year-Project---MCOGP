@@ -41,6 +41,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@kubernetes/client-node": "^0.20.0",
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-js": "^2.43.0",
     "bits-ui": "^0.21.7",
