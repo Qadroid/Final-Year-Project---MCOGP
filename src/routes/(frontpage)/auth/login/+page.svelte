@@ -1,6 +1,5 @@
 <script lang="ts">
     import * as Form from "$lib/components/ui/form/index.js";
-    import { Button } from "$lib/components/ui/button/index.js";
     import { Input } from "$lib/components/ui/input/index.js";
 
     import {
@@ -44,5 +43,4 @@
         <Form.FieldErrors />
       </Form.Field>
     </div>
-    <Button type="submit">Login</Button>
 </form>
