@@ -1,20 +1,13 @@
 <script lang="ts">
-    import * as Tabs from "$lib/components/ui/tabs/index.js";
-    import * as Card from "$lib/components/ui/card/index.js";
-    import Separator from "@/components/ui/separator/separator.svelte";
-    import AuthGif from "$lib/assets/AuthGif.gif";
-  
-    import LoginForm from "./login-form.svelte";
-    import RegisterForm from "./register-form.svelte";
-      
-    export let data: {
-      loginForm: any,
-      registerForm: any
-    }
+  import * as Tabs from "$lib/components/ui/tabs/index.js";
+  import * as Card from "$lib/components/ui/card/index.js";
+  import Separator from "@/components/ui/separator/separator.svelte";
+  import AuthGif from "$lib/assets/AuthGif.gif";
 
-    export let tab
-  
-  </script>
+  // Value used to assign default tab on load
+  export let tab
+
+</script>
   
 
 <div class=" pt-40 items-center flex flex-col justify-center">
@@ -43,7 +36,7 @@
               <Card.Content class="space-y-2">
   
                 <!-- Login form -->
-                <LoginForm data={data.loginForm}/>
+                <slot name="loginForm"/>
                 
               </Card.Content>
             </Card.Root>
@@ -59,7 +52,7 @@
               <Card.Content class="space-y-2">
   
                 <!-- Registration Form -->
-                <RegisterForm data={data.registerForm}/>
+                <slot name="registerForm"/>
               
             </Card.Content>
             </Card.Root>
