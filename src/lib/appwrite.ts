@@ -8,9 +8,7 @@ const server = {
 }
 
 const client = new Client();
-export const account = new Account(client);
+const account = new Account(client);
 client.setEndpoint(server.endpoint).setProject(server.project);
 
-const sdk = { account  }
-
-export { ID, sdk, server } 
+export { ID, account, client } 

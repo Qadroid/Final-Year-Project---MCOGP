@@ -1,9 +1,6 @@
 <script lang="ts">
 	import ConsoleNavbar from '@/components/ui/console-navbar/console-navbar.svelte';
 	import ConsoleTopbar from '@/components/ui/console-topbar/console-topbar.svelte';
-    import { account } from '$lib/appwrite'
-
-    $: sessionAccount = account
 </script>
 
 <div class="flex flex-row w-screen h-screen">

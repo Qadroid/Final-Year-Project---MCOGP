@@ -2,8 +2,8 @@ import type { PageServerLoad, Actions } from "./$types";
 import { superValidate } from "sveltekit-superforms"
 import { loginSchema, registerSchema } from "@/schemas/authSchema";
 import { zod } from "sveltekit-superforms/adapters"
-import { account, ID } from '$lib/appwrite';
 import { fail, redirect } from "@sveltejs/kit";
+import { user } from '@/stores/user';
 
 export const load: PageServerLoad = async () => {
     return {
@@ -22,17 +22,13 @@ export const actions: Actions = {
         }
 
         try {
-            const result = await account.createEmailPasswordSession(
-                loginForm.data.email, 
-                loginForm.data.password
-            )
-    
-            console.log(result)
-
-        } catch(exception) {
-            console.log(exception)
+            user.login(loginForm.data.email, loginForm.data.password);
+        } catch (error) {
+            console.log(error);
         }
 
+        console.log('Logged in');
+        redirect(301, '/');
     },
 
     register: async (event) => {
@@ -44,19 +40,12 @@ export const actions: Actions = {
         }
 
         try {
-            const result = await account.create(
-                ID.unique(),
-                registerForm.data.email,
-                registerForm.data.password,
-            );
-
-            console.log(result)
-
-            alert("Account created successfully!")
-            redirect(301, '/auth/login')
-
-        } catch( exception ) {
-            console.log(exception)
+            user.register(registerForm.data.email, registerForm.data.password);
+        } catch (error) {
+            console.log(error);
         }
+
+        console.log('Logged in');
+        redirect(301, '/');
     }
 }

@@ -1,21 +1,22 @@
 <script lang="ts">
-    import {
-        type LoginSchema, 
-        type RegisterSchema 
-    } from "$lib/schemas/authSchema";
-    import {
-        type SuperValidated,
-        type Infer,
-    } from "sveltekit-superforms";
+    // import {
+    //     type LoginSchema, 
+    //     type RegisterSchema 
+    // } from "$lib/schemas/authSchema";
+    // import {
+    //     type SuperValidated,
+    //     type Infer,
+    // } from "sveltekit-superforms";
     import AuthTabs from "./auth-tabs.svelte";
     import { page } from "$app/stores";
     import LoginForm from "./login/+page.svelte";
     import RegisterForm from "./register/+page.svelte";
       
-    export let data: {
-        loginForm: SuperValidated<Infer<LoginSchema>>,
-        registerForm: SuperValidated<Infer<RegisterSchema>>
-    }
+    export let data
+    // : {
+    //     loginForm: SuperValidated<Infer<LoginSchema>>,
+    //     registerForm: SuperValidated<Infer<RegisterSchema>>
+    // }
   
     let activeTab = "login";
   
