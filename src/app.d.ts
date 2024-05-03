@@ -4,7 +4,13 @@ declare global {
 	namespace App {
 		// interface Error {}
 		// interface Locals {}
-		// interface PageData {}
+		interface PageData {
+			loginForm: superValidated;
+			registerForm: superValidated;
+		}
+		interface LayoutData {
+			loggedIn: boolean;
+		}
 		// interface PageState {}
 		// interface Platform {}
 	}
