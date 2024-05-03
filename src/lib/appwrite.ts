@@ -1,11 +1,16 @@
 import { Client, Account } from 'appwrite';
 import { PUBLIC_APPWRITE_ENDPOINT, PUBLIC_APPWRITE_PROJECT_ID } from '$env/static/public';
+import { ID } from 'appwrite';
 
-export const client = new Client();
+const server = {
+    endpoint: PUBLIC_APPWRITE_ENDPOINT,
+    project: PUBLIC_APPWRITE_PROJECT_ID,    
+}
 
-client
-    .setEndpoint(PUBLIC_APPWRITE_ENDPOINT)
-    .setProject(PUBLIC_APPWRITE_PROJECT_ID);
-
+const client = new Client();
 export const account = new Account(client);
-export { ID } from 'appwrite';
+client.setEndpoint(server.endpoint).setProject(server.project);
+
+const sdk = { account  }
+
+export { ID, sdk, server } 
