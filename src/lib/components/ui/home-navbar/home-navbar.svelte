@@ -3,21 +3,18 @@
   import { Button } from "$lib/components/ui/button/index.js";
 	import HomeNavbarSm from '@/components/ui/home-navbar/home-navbar-sm.svelte';
 	import HomeNavbarMd from '@/components/ui/home-navbar/home-navbar-md.svelte';
-  import { user } from '@/stores/user';
-
-  let aUser;
-  $: if ($user) aUser = true; 
-  $: console.log(user)
-  let result = user.logout()
-  console.log(result)
+  import { SignedIn, SignedOut } from 'sveltefire';
+  import { auth } from '$lib/firebase';
+	import * as Avatar from '$lib/components/ui/avatar/index.js';
+  import { DownloadURL } from 'sveltefire';
 </script>
 
-<div class="h-14 flex justify-between text-gray-300 sticky">
+<div class="flex justify-between text-gray-300 sticky p-2">
   <!-- Left side of Navbar -->
   <div id="left-menu" class="flex items-center pl-2">
 
     <!-- Small devices -->
-    <div class="md:hidden flex items-center">
+    <div class="md:hidden flex">
       <HomeNavbarSm />
     </div>
 
@@ -28,26 +25,41 @@
   </div>
 
   <!-- Right side of Navbar -->
-  <div id="top-navbar-right" class="flex">
-    <div class="flex items-center pr-2">
-      {#if $user}
-        <Button on:click={user.logout} variant="outline" class="flex">
-          Logout
-          <LogOut class="h-6 w-6 ml-4" />
-        </Button>
-      {:else}
-        <Button href="/auth" variant="outline" class="flex">
-          Login
-          <CircleUser class="h-6 w-6 ml-4" />
-        </Button>
-      {/if}
-    </div>
-    <div class="flex items-center pr-2">
-      <Button href="/console" variant="outline" class="flex">
-        Console
-        <TerminalIcon class="h-4 w-4 ml-3" />
+  <div id="top-navbar-right" class="flex space-x-2 ">
+  
+    <!-- If user is signed in -->
+    <SignedIn let:user>
+
+      <Button on:click={auth.signOut}>
+        <LogOut class="h-6 w-6 m-4" />
       </Button>
-    </div>
+      
+      <Button href="/account" variant="outline" class="flex">
+        {user.uid}
+        <DownloadURL ref="users/{user.uid}/profileImage" let:link>
+          <Avatar.Root class="h-6 w-6 ml-4"> 
+            <Avatar.Image src={link} alt="user profile image" />
+          </Avatar.Root>
+        </DownloadURL>
+      </Button>
+
+    </SignedIn>
+    
+    <!-- If user is not signed in -->
+    <SignedOut>
+      
+      <Button href="/auth" variant="outline" class="flex">
+        Login
+        <CircleUser class="h-5 w-5 ml-3" />
+      </Button>
+      
+    </SignedOut>
+
+    <Button href="/console" variant="outline" class="flex">
+      Console
+      <TerminalIcon class="h-5 w-5 ml-3" />
+    </Button>
+
   </div>
 </div>
   

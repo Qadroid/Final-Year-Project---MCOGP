@@ -2,18 +2,24 @@
 	import * as Avatar from "$lib/components/ui/avatar/index.js";
     import { Button } from "$lib/components/ui/button/index.js";
 	import { MessageCircle, SettingsIcon } from "lucide-svelte";
+    import { DownloadURL, SignedIn } from "sveltefire";
 </script>
 
-<div class="flex flex-row items-center w-full">
-    <div class="basis-2/12">
-        <Avatar.Root class="w-8 h-8">
-            <Avatar.Image src="https://github.com/shadcn.png" alt="@shadcn" />
-            <Avatar.Fallback>CN</Avatar.Fallback>                
-        </Avatar.Root>
+<div class="flex justify-between w-full space-x-3 p-1">
+    <div class="flex p-1">
+        <Button class="h-8 w-8 rounded-full" href='/console/account'>
+            <SignedIn let:user>
+                <DownloadURL ref={`users/${user.uid}/avatar`} let:link>
+                    <Avatar.Root class="w-8 h-8">
+                        <Avatar.Image src={link} alt={user.displayName} />
+                        <Avatar.Fallback>{user.displayName}</Avatar.Fallback>
+                    </Avatar.Root>
+                </DownloadURL>
+            </SignedIn>
+        </Button>
     </div>
-    <div class="basis-5/12"></div>
-    <div class="basis-5/12">
-        <Button class="h-10 w-10 p-2" variant="outline"><SettingsIcon /></Button>
-        <Button class="h-10 w-10 p-2" variant="outline"><MessageCircle /></Button>
+    <div class="flex space-x-1">
+        <Button class="h-9 w-9 p-1" variant="outline"><SettingsIcon /></Button>
+        <Button class="h-9 w-9 p-1" variant="outline"><MessageCircle /></Button>
     </div>
 </div>

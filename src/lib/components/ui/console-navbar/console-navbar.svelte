@@ -1,27 +1,34 @@
 <script lang=ts>
-    import Separator from "$lib/components/ui/separator/separator.svelte";
 	import ConsoleNavbarContent from "./console-navbar-content.svelte";
 	import ConsoleNavbarFooter from "./console-navbar-footer.svelte";
 	import ConsoleNavbarHeader from "./console-navbar-header.svelte";
 
 </script>
 
-<div class="relative p-2 flex-col space-x-1 border-b-2 h-screen min-h-[750px] navbar-left w-72 bg-zinc-950 border-r">
-    <!-- Navbar header -->
-    <div class="h-15 flex justify-evenly  p-2 rounded-lg space-x-2 basis-full">
-        <ConsoleNavbarHeader />
+<div class="flex-col flex h-screen w-64 bg-zinc-950 border-r">
+    
+    <!-- Top bound -->
+    
+    <div class="flex-grow">
+        
+        <!-- Navbar header -->
+        <div class="">
+            <ConsoleNavbarHeader />
+        </div>
+    
+        <div class="border-b"/>
+        
+        <!-- Navbar content -->
+        <div class="grow">
+            <ConsoleNavbarContent />
+        </div>
+
     </div>
 
-    <Separator class="w-full my-1" />
-    
-    <!-- Navbar content -->
-    <div class="">
-        <ConsoleNavbarContent />
-    </div>
+    <!-- Bottom bound -->
 
     <!-- Navbar footer -->
-    <div class="flex flex-col navbar-left-footer absolute h-20 inset-x-0 bottom-0 space-x-3">
-        <Separator class="w-11/12 my-3"/>
+    <div class="h-14 p-1 border-t">
         <ConsoleNavbarFooter />
     </div>
 </div>

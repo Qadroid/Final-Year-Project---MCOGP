@@ -13,7 +13,7 @@
 
 <div>
     <!-- Breadcrumb -->
-    <div class="p-3 pl-5">
+    <div class="p-3 pl-5 h-14">
         <Breadcrumb.Root>
             <Breadcrumb.List>
 

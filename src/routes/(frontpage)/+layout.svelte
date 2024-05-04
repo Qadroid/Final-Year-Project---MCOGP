@@ -1,13 +1,15 @@
 <script lang="ts">
-    import HomeNavbar from '@/components/ui/home-navbar/home-navbar.svelte';
+    import HomeNavbar from '$lib/components/ui/home-navbar/home-navbar.svelte';
 </script>
 
-<!-- Navbar -->
-<div id="home-navbar-top" class="w-full">
-	<HomeNavbar />
-</div>
-
-<!-- Page content -->
 <div>
-	<slot />
+	<!-- Navbar -->
+	<div id="home-navbar-top" class="w-full h-14">
+		<HomeNavbar />
+	</div>
+	
+	<!-- Page content -->
+	<div class="h-[100vh-60px]">
+		<slot />
+	</div>
 </div>

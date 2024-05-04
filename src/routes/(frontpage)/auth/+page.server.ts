@@ -3,7 +3,7 @@ import { superValidate } from "sveltekit-superforms"
 import { loginSchema, registerSchema } from "@/schemas/authSchema";
 import { zod } from "sveltekit-superforms/adapters"
 import { fail, redirect } from "@sveltejs/kit";
-import { user } from '@/stores/user';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 
 export const load: PageServerLoad = async () => {
     return {
@@ -21,11 +21,17 @@ export const actions: Actions = {
             })
         }
 
-        try {
-            user.login(loginForm.data.email, loginForm.data.password);
-        } catch (error) {
-            console.log(error);
-        }
+        const auth = getAuth()
+        signInWithEmailAndPassword(auth, loginForm.data.email, loginForm.data.password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log(user);
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode, errorMessage);
+            })
 
         console.log('Logged in');
         redirect(301, '/');
@@ -39,11 +45,17 @@ export const actions: Actions = {
             })
         }
 
-        try {
-            user.register(registerForm.data.email, registerForm.data.password);
-        } catch (error) {
-            console.log(error);
-        }
+        const auth = getAuth()
+        createUserWithEmailAndPassword(auth, registerForm.data.email, registerForm.data.password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log(user);
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode, errorMessage)
+            })
 
         console.log('Logged in');
         redirect(301, '/');
