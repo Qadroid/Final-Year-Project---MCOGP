@@ -4,6 +4,7 @@ import { loginSchema, registerSchema } from "@/schemas/authSchema";
 import { zod } from "sveltekit-superforms/adapters"
 import { fail, redirect } from "@sveltejs/kit";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
+import { userStore } from "sveltefire";
 
 export const load: PageServerLoad = async () => {
     return {
@@ -32,6 +33,8 @@ export const actions: Actions = {
                 const errorMessage = error.message;
                 console.log(errorCode, errorMessage);
             })
+        
+        userStore(auth)
 
         console.log('Logged in');
         redirect(301, '/');
@@ -57,7 +60,7 @@ export const actions: Actions = {
                 console.log(errorCode, errorMessage)
             })
 
-        console.log('Logged in');
+        console.log('Account created. Please login to continue');
         redirect(301, '/');
     }
 }
