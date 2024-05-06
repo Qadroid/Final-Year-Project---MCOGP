@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import ConsoleNavbar from '@/components/ui/console-navbar/console-navbar.svelte';
-    import { SignedOut, SignedIn } from 'sveltefire';
+import ConsoleNavbar from '@/components/ui/console-navbar/console-navbar.svelte';
+import { SignedOut, SignedIn } from 'sveltefire';
+
 </script>
 
 <SignedOut>
@@ -19,7 +19,7 @@
     
         <div class="flex-col flex-grow">
             <!-- Content -->
-            <div class="p-6h-full">
+            <div class="p-6 h-full">
                 <slot />
             </div>
         </div>

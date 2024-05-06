@@ -2,14 +2,14 @@
     import HomeNavbar from '$lib/components/ui/home-navbar/home-navbar.svelte';
 </script>
 
-<div>
+<div class="h-screen">
 	<!-- Navbar -->
-	<div id="home-navbar-top" class="w-full h-14">
+	<div id="home-navbar-top" class="w-screen h-14">
 		<HomeNavbar />
 	</div>
 	
 	<!-- Page content -->
-	<div class="h-[100vh-60px]">
+	<div class="h-full">
 		<slot />
 	</div>
 </div>
