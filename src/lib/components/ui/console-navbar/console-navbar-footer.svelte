@@ -1,7 +1,7 @@
 <script lang=ts>
 	import * as Avatar from "$lib/components/ui/avatar/index.js";
     import { Button } from "$lib/components/ui/button/index.js";
-	import { MessageCircle, SettingsIcon } from "lucide-svelte";
+	import { CircleUser, MessageCircle, SettingsIcon } from "lucide-svelte";
     import { DownloadURL, SignedIn } from "sveltefire";
 </script>
 
@@ -11,7 +11,11 @@
             <SignedIn let:user>
                 <DownloadURL ref={`users/${user.uid}/avatar`} let:link>
                     <Avatar.Root class="w-8 h-8">
-                        <Avatar.Image src={link} alt={user.displayName} />
+                        {#if link == null}
+                            <CircleUser class="h-5 w-5" />
+                        {:else}
+                            <Avatar.Image src={link} alt={user.displayName} />
+                        {/if}
                         <Avatar.Fallback>{user.displayName}</Avatar.Fallback>
                     </Avatar.Root>
                 </DownloadURL>
@@ -19,7 +23,7 @@
         </Button>
     </div>
     <div class="flex space-x-1">
-        <Button class="h-9 w-9 p-1" variant="outline"><SettingsIcon /></Button>
-        <Button class="h-9 w-9 p-1" variant="outline"><MessageCircle /></Button>
+        <Button class="h-9 w-9 p-2" variant="outline"><SettingsIcon /></Button>
+        <Button class="h-9 w-9 p-2" variant="outline"><MessageCircle /></Button>
     </div>
 </div>
