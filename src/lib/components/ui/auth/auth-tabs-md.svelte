@@ -10,11 +10,11 @@
   
 
 <div class="">
-  <div class="rounded-lg bg-zinc-900 flex p-3 border border-zinc-700">
+  <div class="rounded-lg bg-zinc-900 opacity-95 flex p-3 border border-zinc-700 backdrop-blur-3xl">
 
     <!-- Auth dialog image -->
     <!-- <img src={AuthImg} class="w-[400px] h-[465px] rounded-md" alt="auth-side"/> -->
-    <div class="w-[400px] h-[465px] rounded-md opacity-95 bg-gradient-to-t from-zinc-500 from-10% via-zinc-600 to-zinc-700" />
+    <div class="w-[400px] h-[465px] rounded-md opacity-95 bg-gradient-to-r from-purple-600 via-blue-500 to-purple-800 animate-gradient" />
 
     <!-- Auth page tabs -->
     <div class="w-[400px] px-2 flex">
@@ -60,3 +60,24 @@
   </div>
 </div>
   
+
+<style>
+  .animate-gradient {
+    background-size: 300%;
+    -webkit-animation: animatedgradient 6s ease infinite;
+    -moz-animation: animatedgradient 6s ease infinite;
+    animation: gradient 6s ease infinite;
+  }
+
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+</style>

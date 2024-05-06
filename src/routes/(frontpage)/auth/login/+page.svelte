@@ -14,7 +14,7 @@
     import { zodClient } from "sveltekit-superforms/adapters";
 	import { Button } from "@/components/ui/button";
 
-  export let data: SuperValidated<Infer<LoginSchema>>;
+  export let data: SuperValidated<Infer<LoginSchema>>
 
   const form = superForm( data, {
       validators: zodClient(loginSchema)

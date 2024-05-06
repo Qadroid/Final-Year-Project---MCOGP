@@ -3,7 +3,8 @@ import { superValidate } from "sveltekit-superforms"
 import { loginSchema, registerSchema } from "@/schemas/authSchema";
 import { zod } from "sveltekit-superforms/adapters"
 import { fail, redirect } from "@sveltejs/kit";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '$lib/firebase'
 import { userStore } from "sveltefire";
 
 export const load: PageServerLoad = async () => {
@@ -22,7 +23,6 @@ export const actions: Actions = {
             })
         }
 
-        const auth = getAuth()
         signInWithEmailAndPassword(auth, loginForm.data.email, loginForm.data.password)
             .then((userCredential) => {
                 const user = userCredential.user;
@@ -48,7 +48,6 @@ export const actions: Actions = {
             })
         }
 
-        const auth = getAuth()
         createUserWithEmailAndPassword(auth, registerForm.data.email, registerForm.data.password)
             .then((userCredential) => {
                 const user = userCredential.user;

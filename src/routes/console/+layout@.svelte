@@ -4,13 +4,13 @@
     import { SignedOut, SignedIn } from 'sveltefire';
 </script>
 
-<!-- <SignedOut>
+<SignedOut>
     <div class="flex w-[90vh] h-[90vh] p-3 justify-center items-center text-center">
         <p>You must be signed in to access this page. Please sign in from the <a href='/auth/login' class="text-blue-300 hover:text-blue-500">login page</a></p>
     </div>    
 </SignedOut>
 
-<SignedIn> -->
+<SignedIn>
     <div class="flex flex-row w-screen h-screen">
         <!-- Navbar -->
         <div class="">
@@ -24,4 +24,4 @@
             </div>
         </div>
     </div>
-<!-- </SignedIn> -->
+</SignedIn>

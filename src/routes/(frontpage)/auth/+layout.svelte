@@ -3,27 +3,40 @@
   import { page } from "$app/stores";
   import LoginForm from "./login/+page.svelte";
   import RegisterForm from "./register/+page.svelte";
-    
+	import { SignedIn, SignedOut } from "sveltefire";
+	import { redirect } from "@sveltejs/kit";
+
+  const bgImage = "https://images.pexels.com/photos/20985362/pexels-photo-20985362/free-photo-of-cerro-2.jpeg"
+  
+  // Data for login and register forms generated in +layout.server.ts
   export let data
 
-  let activeTab = "login";
-
+  // Use page store to get current page path
+  let tab = "login";
   $: {
     const path = $page.url.pathname;
     if (path === "/auth/login") {
-      activeTab = "login";
+      tab = "login";
     } else if (path === "/auth/register") {
-      activeTab = "register";
+      tab = "register";
     } else {
-      activeTab = "login";
+      tab = "login";
     }
   }
 
 </script>
 
-<div class="flex h-[90vh] items-center justify-center">
-  <AuthTabsMd tab={activeTab}>
-    <LoginForm slot="loginForm" data={data.loginForm}/>
-    <RegisterForm slot="registerForm" data={data.registerForm}/>
-  </AuthTabsMd>
-</div>
+
+<!-- Current height setting isn't optimal. Requires change -->
+<SignedOut let:auth>
+  <div class="flex h-[93vh] items-center justify-center bg-center bg-cover" style="background-image: url({ bgImage })">
+    <AuthTabsMd {tab}>
+      <LoginForm slot="loginForm" data={data.loginForm}/>
+      <RegisterForm slot="registerForm" data={data.registerForm}/>
+    </AuthTabsMd>
+  </div>
+</SignedOut>
+
+<SignedIn>
+  {redirect(301, '/')}
+</SignedIn>
