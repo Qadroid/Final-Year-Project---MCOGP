@@ -23,11 +23,10 @@
   });
 
   const { form: formData, enhance } = form;
-
 </script>
 
 <SignedOut let:auth>
-  <form use:enhance method="POST" on:submit={() => signInWithEmailAndPassword(auth, $formData.email, $formData.password)}>
+  <form use:enhance method="POST">
     <div class="space-y-1">
       <Form.Field {form} name="email">
         <Form.Control let:attrs>

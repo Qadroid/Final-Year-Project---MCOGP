@@ -44,7 +44,7 @@
   "dependencies": {
     "@kubernetes/client-node": "^0.20.0",
     "@supabase/ssr": "^0.3.0",
-    "@supabase/supabase-js": "^2.43.0",
+    "@supabase/supabase-js": "^2.43.1",
     "appwrite": "14.0.1",
     "bits-ui": "^0.21.7",
     "clsx": "^2.1.1",
