@@ -2,7 +2,28 @@
   import * as Select from '$lib/components/ui/select/index.js';
   import { Button } from '$lib/components/ui/button/index.js';
 	import { Anchor, Plus } from 'lucide-svelte';
-  import { Collection, SignedIn } from 'sveltefire';
+  import { loadProjects } from '@/stores/firebaseStore';
+	import type { DocumentData } from 'firebase/firestore';
+  import { onDestroy, onMount } from 'svelte';
+  import { currentProject, subscribeToCurrentProject } from '@/stores/firebaseStore';
+
+let unsubscribe: () => void;
+
+onMount(() => {
+    unsubscribe = subscribeToCurrentProject();
+});
+
+onDestroy(() => {
+    unsubscribe();
+});
+
+  let projects: DocumentData[];
+
+  async function loadProjectsData() {
+    projects = await loadProjects();
+  }
+  
+  loadProjectsData();
 
 </script>
 
@@ -13,7 +34,9 @@
     </Button>
   </div>
   <div>
-    <Select.Root>
+    <Select.Root
+      selected={$currentProject}
+    >
       <Select.Trigger class="w-[200px]">
         <Select.Value placeholder="Select a project" />
       </Select.Trigger>
@@ -21,15 +44,11 @@
         <Select.Group>
           <Select.Label class="text-zinc-400 rounded-md bg-zinc-900 text-center opacity-70 m-1">Projects</Select.Label>
           
-          <SignedIn let:user>
-            <Collection ref={'/users/' + user.uid + '/projects'} let:data>
-              {#each data as project}
-                <Select.Item value={project.value} label="{project.label}"
-                  >{project.label}</Select.Item
-                >
-              {/each}  
-            </Collection>
-          </SignedIn>
+            {#each projects as project}
+              <Select.Item value={project} label="{project.projectName}"
+                >{project.projectName}</Select.Item
+              >
+            {/each}  
             
         </Select.Group>
           <div class="m-1 mt-2">
