@@ -4,7 +4,6 @@
 	import HomeNavbarSm from '@/components/ui/home-navbar/home-navbar-sm.svelte';
 	import HomeNavbarMd from '@/components/ui/home-navbar/home-navbar-md.svelte';
   import { SignedIn, SignedOut } from 'sveltefire';
-  import { auth } from '$lib/firebase';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
   import { DownloadURL } from 'sveltefire';
 </script>
@@ -28,17 +27,25 @@
   <div id="top-navbar-right" class="flex space-x-2 ">
   
     <!-- If user is signed in -->
-    <SignedIn let:user>
+    <SignedIn let:user let:signOut>
 
-      <Button on:click={auth.signOut}>
-        <LogOut class="h-6 w-6 m-4" />
+      <Button on:click={signOut} variant="destructive">
+        <LogOut class="h-5 w-5" />
       </Button>
       
       <Button href="/account" variant="outline" class="flex">
-        {user.uid}
-        <DownloadURL ref="users/{user.uid}/profileImage" let:link>
-          <Avatar.Root class="h-6 w-6 ml-4"> 
-            <Avatar.Image src={link} alt="user profile image" />
+        {#if user.displayName == null}
+          Account
+        {:else}
+          {user.displayName}
+        {/if}
+        <DownloadURL ref="users/{user.uid}/avatar" let:link>
+          <Avatar.Root class="h-6 w-6 ml-4 items-center"> 
+            {#if user.photoURL == null}
+                <CircleUser class="h-5 w-5" />
+            {:else}
+                <Avatar.Image src={link} alt={user.displayName} />
+            {/if}
           </Avatar.Root>
         </DownloadURL>
       </Button>
