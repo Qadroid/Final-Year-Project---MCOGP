@@ -36,6 +36,9 @@ onDestroy(() => {
   <div>
     <Select.Root
       selected={$currentProject}
+      onSelectedChange={(e) => {
+        e && currentProject.set(e.value);
+      }}
     >
       <Select.Trigger class="w-[200px]">
         <Select.Value placeholder="Select a project" />
