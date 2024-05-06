@@ -3,9 +3,6 @@
   import * as Card from "$lib/components/ui/card/index.js";
   // import AuthImg from "$lib/assets/AuthGif.gif";
 
-  // Value used to assign default tab on load
-  export let tab
-
 </script>
   
 
@@ -18,7 +15,7 @@
 
     <!-- Auth page tabs -->
     <div class="w-[400px] px-2 flex">
-      <Tabs.Root value={tab} class="w-[400px] px-3">
+      <Tabs.Root value="login" class="w-[400px] px-3">
         <Tabs.List class="grid w-full grid-cols-2 bg-zinc-800">
           <Tabs.Trigger value="login">Login</Tabs.Trigger>
           <Tabs.Trigger value="register">Register</Tabs.Trigger>

@@ -27,9 +27,9 @@ export const actions: Actions = {
 
         if (error) {
             console.log(error);
-            return redirect(302, '/auth/login')
+            return redirect(302, '/auth')
         } else {
-            return redirect(303, '/private')
+            return redirect(303, '/console')
         }
     },
 
@@ -48,7 +48,7 @@ export const actions: Actions = {
 
         if (error) {
             console.log(error);
-            return redirect(302, '/auth/register')
+            return redirect(302, '/auth')
         } else {
             return redirect(303, '/')
         }
