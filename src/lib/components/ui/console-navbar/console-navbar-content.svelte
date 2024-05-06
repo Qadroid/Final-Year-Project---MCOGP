@@ -6,31 +6,32 @@
         {
             sectionTitle: "Menu",
             sectionContent: [
-                { title: "Dashboard", href: "/console/dashboard" },
-                { title: "Apps", href: "/console/apps" },
+                { title: "Dashboard", href: "dashboard" },
+                { title: "Apps", href: "apps" },
             ],
         },
         {
             sectionTitle: "Advanced - Resources",
             sectionContent: [
-                { title: "Containers", href: "/console/containers" },
-                { title: "Deployments", href: "/console/deployments" },
-                { title: "Services", href: "/console/services" },
-                { title: "Volumes", href: "/console/volumes" },
-                { title: "Ingress", href: "/console/ingress" },
+                { title: "Containers", href: "containers" },
+                { title: "Deployments", href: "deployments" },
+                { title: "Services", href: "services" },
+                { title: "Volumes", href: "volumes" },
+                { title: "Ingress", href: "ingress" },
             ],
         },
         {
             sectionTitle: "Project",
             sectionContent: [
-                { title: "Clusters", href: "/console/clusters" },
-                { title: "Nodes", href: "/console/nodes" },
-                { title: "Plan", href: "/console/plan" }
+                { title: "Clusters", href: "clusters" },
+                { title: "Nodes", href: "nodes" },
+                { title: "Plan", href: "plan" }
             ]
         }
     ]
 
     let variant = "ghost"
+    let project = "default"
 
 </script>
    
@@ -41,10 +42,10 @@
             {section.sectionTitle}
         </div>
         {#each section.sectionContent as button}
-            {#if ($page.url.pathname === button.href)} 
-                <Button class="menu-button w-full justify-start opacity-75 h-8" variant="default" href="{button.href}">{button.title}</Button>
+            {#if ($page.url.pathname === "/console/" + project + "/" + button.href)} 
+                <Button class="menu-button w-full justify-start opacity-75 h-8" variant="default" href="/console/{project}/{button.href}">{button.title}</Button>
             {:else}
-                <Button class="menu-button w-full justify-start opacity-75 h-8" variant="ghost" href="{button.href}">{button.title}</Button>
+                <Button class="menu-button w-full justify-start opacity-75 h-8" variant="ghost" href="/console/{project}/{button.href}">{button.title}</Button>
             {/if}
         {/each}
         <div id="separator">
