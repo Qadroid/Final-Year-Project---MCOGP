@@ -1,6 +1,6 @@
 <script lang="ts">
-import ConsoleNavbar from '@/components/ui/console-navbar/console-navbar.svelte';
-import { SignedOut, SignedIn } from 'sveltefire';
+    import ConsoleNavbar from '@/components/ui/console-navbar/console-navbar.svelte';
+    import { SignedOut, SignedIn } from 'sveltefire';
 
 </script>
 
