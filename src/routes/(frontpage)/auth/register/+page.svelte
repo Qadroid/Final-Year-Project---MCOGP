@@ -13,6 +13,8 @@
   } from "sveltekit-superforms";
     import { zodClient } from "sveltekit-superforms/adapters";
 	import Button from "@/components/ui/button/button.svelte";
+  import { SignedOut } from "sveltefire";
+  import { createUserWithEmailAndPassword } from "firebase/auth";
 
   export let data: SuperValidated<Infer<RegisterSchema>>;
 
@@ -21,10 +23,10 @@
   });
 
   const { form: formData, enhance } = form;
-
 </script>
 
-<form use:enhance method="POST" action="/auth/?/register">
+<SignedOut let:auth>
+  <form use:enhance method="POST" on:submit={() => createUserWithEmailAndPassword(auth, $formData.email, $formData.password)}> 
     <div class="space-y-1">
       <Form.Field {form} name="email">
         <Form.Control let:attrs>
@@ -53,4 +55,5 @@
       </Form.Field>
     </div>
     <Button type="submit">Register</Button>
-</form>
+  </form>
+</SignedOut>
