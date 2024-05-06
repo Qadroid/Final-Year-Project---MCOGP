@@ -8,9 +8,7 @@ declare global {
 			loginForm: superValidated;
 			registerForm: superValidated;
 		}
-		interface LayoutData {
-			loggedIn: boolean;
-		}
+		// interface LayoutData {}
 		// interface PageState {}
 		// interface Platform {}
 	}
