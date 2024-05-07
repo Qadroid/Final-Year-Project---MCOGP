@@ -32,6 +32,6 @@
       </DropdownMenu.Group>
       <DropdownMenu.Separator />
       <DropdownMenu.Item on:click={handlePodDelete}>Delete Pod</DropdownMenu.Item>
-      <DropdownMenu.Item href="/console/admin/pods/${id}">View Pod details</DropdownMenu.Item>
+      <DropdownMenu.Item href='/console/admin/pods/{id}'>View Pod details</DropdownMenu.Item>
     </DropdownMenu.Content>
   </DropdownMenu.Root>

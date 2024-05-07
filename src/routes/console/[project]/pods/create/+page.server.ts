@@ -3,14 +3,9 @@ import type { Actions } from './$types';
 import * as k8s from '@kubernetes/client-node';
 
 export const actions: Actions = {
-    default: async ({ event }) => {
-        // insert form validation here
-        // const createPodForm = await superValidate(request, zod(createPodSchema));
-        // if (!createPodForm.valid) {
-        //     return fail(400, {
-        //         createPodForm,
-        //     })
-        // }
+    default: async ({ request }) => {
+        
+
         const { form: formdata } = event.body;
 
         function getK8sClient(encodedKubeConfig: string) {
