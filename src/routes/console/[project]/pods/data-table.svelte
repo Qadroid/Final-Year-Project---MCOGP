@@ -7,8 +7,8 @@
 
     type pod = {
         name: string,
-        namespace: string,
-        containerID: string,
+        // namespace: string,
+        // containerID: string,
         image: string,
         phase: string,
         podIP: string,
@@ -23,8 +23,8 @@
     
     columns = table.createColumns([
         table.column({ accessor: 'name', header: 'Name' }),
-        table.column({ accessor: 'namespace', header: 'Namespace' }),
-        table.column({ accessor: 'containerID', header: 'Container ID' }),
+        // table.column({ accessor: 'namespace', header: 'Namespace' }),
+        // table.column({ accessor: 'containerID', header: 'Container ID' }),
         table.column({ accessor: 'image', header: 'Image' }),
         table.column({ accessor: 'phase', header: 'Phase' }),
         table.column({ accessor: 'podIP', header: 'Pod IP' }),
