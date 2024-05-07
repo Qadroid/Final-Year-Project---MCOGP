@@ -52,12 +52,14 @@
     "firebase": "^10.11.1",
     "formsnap": "^1.0.0",
     "lucide-svelte": "^0.376.1",
+    "shadcn-svelte": "^0.10.5",
     "svelte-radix": "^1.1.0",
     "svelte-routing": "^2.12.0",
     "sveltefire": "^0.4.5",
     "sveltekit-superforms": "^2.12.6",
     "tailwind-merge": "^2.3.0",
     "tailwind-variants": "^0.2.1",
+    "winston": "^3.13.0",
     "zod": "^3.23.5"
   }
 }
