@@ -30,8 +30,6 @@ export const load: PageServerLoad = async () => {
     function transformPodData(rawPods) {
         return rawPods.map(pod => ({
           name: pod.metadata.name,
-          namespace: pod.metadata.namespace,
-          containerID: pod.status?.containerStatuses?.[0]?.containerID || 'Unknown',
           image: pod.status?.containerStatuses?.[0]?.image || 'No image available',
           phase: pod.status.phase,
           podIP: pod.status.podIP,
