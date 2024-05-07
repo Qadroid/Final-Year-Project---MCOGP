@@ -1,7 +1,8 @@
 <script lang='ts'>
     import { readable } from 'svelte/store';
-    import { createTable, Render, Subscribe } from "svelte-headless-table";
+    import { createTable, Render, Subscribe, createRender } from "svelte-headless-table";
     import * as Table from "$lib/components/ui/table";
+    import DataTableActions from './data-table-actions.svelte';
 
     export let podList: pod[];
 
@@ -35,6 +36,13 @@
                 const formatted = new Date(value).toLocaleString();
                 return formatted 
             } 
+        }),
+        table.column({
+          accessor: ({ name }) => name,
+          header: '',
+          cell: ({ value }) => {
+            return createRender(DataTableActions, { id: value });
+          }
         })
     ])
 
