@@ -1,5 +1,5 @@
 <script lang="ts">
-    import ConsoleNavbar from '@/components/ui/console-navbar/console-navbar.svelte';
+    import ConsoleNavbar from '@/components/ui/console-navbar/console-navbar.svelte'
     export let data
 
     const { projects } = data
@@ -16,7 +16,7 @@
         <ConsoleNavbar { projects }/>
     </div>
 
-    <div class="flex-col flex-grow">
+    <div class="flex-col flex-grow max-h-screen">
         <!-- Content -->
         <div class="p-6 h-full">
             <slot />
