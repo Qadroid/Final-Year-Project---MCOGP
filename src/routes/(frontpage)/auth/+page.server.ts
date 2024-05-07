@@ -22,7 +22,7 @@ export const actions: Actions = {
 
         const { error } = await supabase.auth.signInWithPassword({  
             email: loginForm.data.email, 
-            passowrd: loginForm.data.password 
+            password: loginForm.data.password 
         });
 
         if (error) {
@@ -43,7 +43,7 @@ export const actions: Actions = {
 
         const { error } = await supabase.auth.signUp({  
             email: registerForm.data.email, 
-            passowrd: registerForm.data.password 
+            password: registerForm.data.password 
         });
 
         if (error) {

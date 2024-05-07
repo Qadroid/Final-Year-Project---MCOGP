@@ -1,40 +1,47 @@
-import { firestore } from '@/firebase';
 import k8s from '@kubernetes/client-node'
-import { getDoc, doc } from 'firebase/firestore';
+import { createClient } from '@supabase/supabase-js';
 import { writable } from 'svelte/store'
+import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public'
+
+const supabase = createClient( PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
 
 const kc = writable(new k8s.KubeConfig())
 
 async function loadKubeConfig( projectId: string ) {
-    
-    const projectRef = doc(firestore, 'projects', projectId)
-    const project = await getDoc(projectRef);
-  
-    if (project.data.length !== 0) {
-        const kubeconfig = project.data().kubeconfig; project.data
-    
+    const { data, error } = await supabase
+        .from('projects')
+        .select('kubeconfig')
+        .eq('id', projectId)
+        .single();
+
+    if (error) {
+        console.error('Error fetching project:', error);
+        return;
+    }
+
+    if (data && data.kubeconfig) {
+        const kubeconfig = data.kubeconfig;
         kc.update(kc => {
-        kc.loadFromString(kubeconfig);
-        return kc;
+            kc.loadFromString(kubeconfig);
+            return kc;
         });
-  } else {
-    console.log('No such document!');
-  }
-}
-
-const filePath = 'src/lib/kubernetes/k3s.yaml'
-
-kc.loadFromFile(filePath)
-
-const k8sApi = kc.makeApiClient(k8s.CoreV1Api)
-
-const main = async () => {
-    try {
-        const podsRes = await k8sApi.listNamespacedPod('default')
-        console.log(podsRes.body)
-    } catch (err) {
-        console.error(err)
+    } else {
+        console.log('No such project!');
     }
 }
 
-export { main }
+// Update to makeApiClient after initialization
+kc.subscribe(async (config) => {
+    if (config) {
+        const k8sApi = config.makeApiClient(k8s.CoreV1Api);
+
+        try {
+            const podsRes = await k8sApi.listNamespacedPod('default');
+            console.log(podsRes.body);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+});
+
+export { loadKubeConfig, kc };

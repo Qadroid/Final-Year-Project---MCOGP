@@ -1,5 +1,8 @@
 <script lang="ts">
     import ConsoleNavbar from '@/components/ui/console-navbar/console-navbar.svelte';
+    export let data
+
+    const { projects } = data
 </script>
 
 <!-- <div class="flex w-[90vh] h-[90vh] p-3 justify-center items-center text-center">
@@ -10,7 +13,7 @@
 <div class="flex flex-row w-screen h-screen">
     <!-- Navbar -->
     <div class="">
-        <ConsoleNavbar />
+        <ConsoleNavbar { projects }/>
     </div>
 
     <div class="flex-col flex-grow">
