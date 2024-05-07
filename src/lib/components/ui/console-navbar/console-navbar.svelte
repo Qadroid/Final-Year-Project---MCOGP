@@ -28,7 +28,7 @@
         {
             sectionTitle: "Advanced - Resources",
             sectionContent: [
-                { title: "Containers", href: "containers" },
+                { title: "Pods", href: "pods" },
                 { title: "Deployments", href: "deployments" },
                 { title: "Services", href: "services" },
                 { title: "Volumes", href: "volumes" },
