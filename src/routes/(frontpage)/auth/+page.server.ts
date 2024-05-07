@@ -1,9 +1,8 @@
-import type { PageServerLoad, Actions } from "./$types";
-import { superValidate } from "sveltekit-superforms"
+import type { Actions, PageServerLoad } from "./$types";
+import { fail, superValidate } from "sveltekit-superforms"
 import { loginSchema, registerSchema } from "@/schemas/authSchema";
 import { zod } from "sveltekit-superforms/adapters"
-import { fail, redirect } from "@sveltejs/kit";
-import { user } from '@/stores/user';
+import { redirect } from "@sveltejs/kit";
 
 export const load: PageServerLoad = async () => {
     return {
@@ -13,39 +12,45 @@ export const load: PageServerLoad = async () => {
 }
 
 export const actions: Actions = {
-    login: async (event) => {
-        const loginForm = await superValidate(event, zod(loginSchema));
+    login: async ({ request, locals: { supabase } }) => {
+        const loginForm = await superValidate(request, zod(loginSchema));
         if (!loginForm.valid) {
-            return fail(400 , {
-                loginForm
+            return fail(400, {
+                loginForm,
             })
         }
 
-        try {
-            user.login(loginForm.data.email, loginForm.data.password);
-        } catch (error) {
-            console.log(error);
-        }
+        const { error } = await supabase.auth.signInWithPassword({  
+            email: loginForm.data.email, 
+            password: loginForm.data.password 
+        });
 
-        console.log('Logged in');
-        redirect(301, '/');
+        if (error) {
+            console.log(error);
+            return redirect(302, '/auth')
+        } else {
+            return redirect(303, '/console')
+        }
     },
 
-    register: async (event) => {
-        const registerForm = await superValidate(event, zod(registerSchema));
+    signup: async ({ request, locals: { supabase } }) => {
+        const registerForm = await superValidate(request, zod(registerSchema));
         if (!registerForm.valid) {
-            return fail(400 , {
-                registerForm
+            return fail(400, {
+                registerForm,
             })
         }
 
-        try {
-            user.register(registerForm.data.email, registerForm.data.password);
-        } catch (error) {
-            console.log(error);
-        }
+        const { error } = await supabase.auth.signUp({  
+            email: registerForm.data.email, 
+            password: registerForm.data.password 
+        });
 
-        console.log('Logged in');
-        redirect(301, '/');
+        if (error) {
+            console.log(error);
+            return redirect(302, '/auth')
+        } else {
+            return redirect(303, '/')
+        }
     }
 }
