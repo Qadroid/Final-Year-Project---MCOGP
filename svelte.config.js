@@ -14,6 +14,9 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			"@/*":"./src/lib/*",
+			"$lib":"./src/lib/*",
+			"$routes":"./src/routes/*",
+			"$assets":"./src/lib/assets/*",
 		}
 	}
 };
