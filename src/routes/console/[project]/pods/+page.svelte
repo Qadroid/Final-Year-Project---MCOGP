@@ -8,7 +8,7 @@
 
 <div class="px-8 pt-3 flex justify-between items-center">
     <h1 class="text-4xl font-bold">Pods</h1>
-    <Button variant="outline" href="/console/+/containers/create">
+    <Button variant="outline" href="/console/+/pods/create">
         Create Pod
         <Plus class="h-5 w-5 ml-2" />
     </Button>
