@@ -7,11 +7,11 @@
     import { Anchor, Plus } from 'lucide-svelte';
     import { goto } from '$app/navigation';
 
-    let selectedProjectName = projects?.[0]?.name || 'default';
+    $: selectedProjectName = projects[0].name;
   
     // $: {
     //     if (selectedProjectName) {
-    //     goto(`/console/${selectedProjectName}/dashboard`);
+    //         redirect(301, `/console/${selectedProjectName}/dashboard`);
     //     }
     // }
 
@@ -69,35 +69,34 @@
                   </Button>
                 </div>
                 <div>
-                  <select bind:value={selectedProjectName} class="flex w-full mr-24 rounded-sm bg-zinc-950 text-zinc-200 border p-2">
-                    {#each projects as project}
-                      <option value={project.id} class="w-full p-2">{project.name}</option>
-                    {/each}
-                  </select>
-                  <!-- <Select.Root bind:selected={selectedProjectId} on:change="{e => selectedProjectId = e.detail}">
-                    <Select.Trigger class="w-[200px]">
-                      <Select.Value placeholder="Select a project" />
-                    </Select.Trigger>
-                    <Select.Content>
-                      <Select.Group>
-                        <Select.Label class="text-zinc-400 rounded-md bg-zinc-900 text-center opacity-70 m-1">Projects</Select.Label>
-                        
-                          {#each projects as project}
-                            <Select.Item value={project.id} label="{project.name}"
-                              >{project.name}</Select.Item
-                            >
-                          {/each} 
-                          
-                      </Select.Group>
-                        <div class="m-1 mt-2">
-                          <Button class="w-full" disabled variant="outline">
-                              Create new project
-                            <Plus class="w-4 h-4 ml-2" />
-                          </Button>
-                        </div>
-                    </Select.Content>
-                    <Select.Input name="favoriteproject" />
-                  </Select.Root> -->
+                    <Select.Root 
+                        selected={selectedProjectName}
+                        onSelectedChange={(v) =>
+                            v && (selectedProjectName = v.value)}
+                    >
+                        <Select.Trigger class="w-[200px]">
+                        <Select.Value placeholder="Select a project" />
+                        </Select.Trigger>
+                        <Select.Content>
+                        <Select.Group>
+                            <Select.Label class="text-zinc-400 rounded-md bg-zinc-900 text-center opacity-70 m-1">Projects</Select.Label>
+                            
+                            {#each projects as project}
+                                <Select.Item value={project.name} label="{project.name}"
+                                >{project.name}</Select.Item
+                                >
+                            {/each} 
+                            
+                        </Select.Group>
+                            <div class="m-1 mt-2">
+                            <Button class="w-full" disabled variant="outline">
+                                Create new project
+                                <Plus class="w-4 h-4 ml-2" />
+                            </Button>
+                            </div>
+                        </Select.Content>
+                        <Select.Input name="favoriteproject" />
+                    </Select.Root>
                 </div>
               </div>
         </div>
