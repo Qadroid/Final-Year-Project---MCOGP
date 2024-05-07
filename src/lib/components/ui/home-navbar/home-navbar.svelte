@@ -4,6 +4,18 @@
 	import HomeNavbarSm from '@/components/ui/home-navbar/home-navbar-sm.svelte';
 	import HomeNavbarMd from '@/components/ui/home-navbar/home-navbar-md.svelte';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
+
+  export let session, supabase, user 
+
+  async function handleLogout() {
+    try {
+      let { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      console.log('Logged out');
+    } catch (error) {
+      console.error('Error logging out:', error)
+    }
+  }
 </script>
 
 <div class="flex justify-between text-gray-300 sticky p-2">
@@ -24,13 +36,13 @@
   <!-- Right side of Navbar -->
   <div id="top-navbar-right" class="flex space-x-2 ">
   
+    {#if (session)} 
     <!-- If user is signed in -->
-
-      <!-- <Button on:click={signOut} variant="destructive">
+      <Button on:click={handleLogout} variant="destructive">
         <LogOut class="h-5 w-5" />
-      </Button> -->
+      </Button>
       
-      <!-- <Button href="/account" variant="outline" class="flex">
+      <Button href="/account" variant="outline" class="flex">
         {#if user.displayName == null}
           Account
         {:else}
@@ -40,18 +52,20 @@
             {#if user.photoURL == null}
                 <CircleUser class="h-5 w-5" />
             {:else}
-                <Avatar.Image src={link} alt={user.displayName} />
+                <!-- <Avatar.Image src={link} alt={user.displayName} /> -->
             {/if}
           </Avatar.Root>
-      </Button> -->
+      </Button>
 
-    <!-- If user is not signed in -->
-      
-    <Button href="/auth" variant="outline" class="flex">
-      Login
-      <CircleUser class="h-5 w-5 ml-3" />
-    </Button>
-      
+    {:else}
+
+      <!-- If user is not signed in -->    
+      <Button href="/auth" variant="outline" class="flex">
+        Login
+        <CircleUser class="h-5 w-5 ml-3" />
+      </Button>
+        
+    {/if}
 
     <Button href="/console" variant="outline" class="flex">
       Console
