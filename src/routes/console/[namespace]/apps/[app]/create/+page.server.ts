@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { KUBECONFIG_BASE64 } from '$env/static/private';
 import * as k8s from '@kubernetes/client-node';
-import { minecraftSchema } from '@/schemas/appSchema';
+import { minecraftSchema } from '@/schemas/minecraftSchema';
 import { fail, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 

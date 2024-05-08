@@ -5,7 +5,7 @@
     import {
         minecraftSchema,
         type MinecraftSchema,  
-    } from "$lib/schemas/appSchema";
+    } from "@/schemas/minecraftSchema";
     import {
         type SuperValidated,
         type Infer,
