@@ -1,6 +1,5 @@
 <script lang="ts">
-  import AuthTabsMd from "@/components/ui/auth/auth-tabs-md.svelte";
-  import { page } from "$app/stores";
+  import AuthTabsMd from "$lib/components/custom/auth/auth-tabs-md.svelte";
   import LoginForm from "./login.svelte";
   import RegisterForm from "./register.svelte";
 
@@ -14,7 +13,7 @@
 
 <!-- Current height setting isn't optimal. Requires change -->
 
-<div class="flex h-[93vh] items-center justify-center bg-center bg-cover" style="background-image: url({ bgImage })">
+<div class="flex items-center justify-center bg-center bg-cover w-full" style="background-image: url({ bgImage })">
   <AuthTabsMd>
     <LoginForm slot="loginForm" data={data.loginForm}/>
     <RegisterForm slot="registerForm" data={data.registerForm}/>
