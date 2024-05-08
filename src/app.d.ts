@@ -16,6 +16,13 @@ declare global {
 			registerForm: superValidated;
 		}
 
+		interface PageServerLoad {
+			depends: Function
+			locals: {
+				supabase: SupabaseClient
+			}
+		}
+
 		// interface LayoutData {}
 		// interface PageState {}
 		// interface Platform {}

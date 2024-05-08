@@ -5,7 +5,6 @@
     import * as Select from '$lib/components/ui/select/index.js';
     import { Button } from '$lib/components/ui/button/index.js';
     import { Anchor, Plus } from 'lucide-svelte';
-    import { goto } from '$app/navigation';
 
     $: selectedProjectName = projects[0].name;
   
@@ -45,7 +44,7 @@
         }
     ]
 
-    let variant = "ghost"
+    let variant = "ghost" // For the buttons in the navbar
 
     // For footer
     import * as Avatar from "$lib/components/ui/avatar/index.js";

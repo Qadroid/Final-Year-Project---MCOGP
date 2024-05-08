@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as Tabs from "$lib/components/ui/tabs/index.js";
   import * as Card from "$lib/components/ui/card/index.js";
-  // import AuthImg from "$lib/assets/AuthGif.gif";
+  import AuthImg from "$lib/assets/AuthGif.gif";
 
 </script>
   
@@ -10,12 +10,12 @@
   <div class="rounded-lg bg-zinc-900 opacity-95 flex p-3 border border-zinc-700 backdrop-blur-3xl">
 
     <!-- Auth dialog image -->
-    <!-- <img src={AuthImg} class="w-[400px] h-[465px] rounded-md" alt="auth-side"/> -->
-    <div class="w-[400px] h-[465px] rounded-md opacity-95 bg-gradient-to-r from-purple-600 via-blue-500 to-purple-800 animate-gradient" />
+    <img src={AuthImg} class="w-[400px] h-[465px] rounded-md grayscale " alt="auth-side"/>
+    <!-- <div class="hidden md:flex w-[350px] h-[465px] rounded-md opacity-95 bg-gradient-to-r from-purple-600 via-blue-500 to-purple-800 animate-gradient" /> -->
 
     <!-- Auth page tabs -->
-    <div class="w-[400px] px-2 flex">
-      <Tabs.Root value="login" class="w-[400px] px-3">
+    <div class="w-[380px] px-2 flex">
+      <Tabs.Root value="login" class="w-[380px] px-3 shrink-0">
         <Tabs.List class="grid w-full grid-cols-2 bg-zinc-800">
           <Tabs.Trigger value="login">Login</Tabs.Trigger>
           <Tabs.Trigger value="register">Register</Tabs.Trigger>
