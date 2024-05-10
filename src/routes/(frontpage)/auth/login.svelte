@@ -5,7 +5,7 @@
   import {
       loginSchema,
       type LoginSchema,  
-  } from "$lib/schemas/authSchema";
+  } from "./authSchema";
   import {
       type SuperValidated,
       type Infer,

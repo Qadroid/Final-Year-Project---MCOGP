@@ -1,6 +1,6 @@
 import type { Actions, PageServerLoad } from "./$types";
 import { fail, superValidate } from "sveltekit-superforms"
-import { loginSchema, registerSchema } from "@/schemas/authSchema";
+import { loginSchema, registerSchema } from "$routes/(frontpage)/auth/authSchema";
 import { zod } from "sveltekit-superforms/adapters"
 import { redirect } from "@sveltejs/kit";
 
@@ -44,6 +44,13 @@ export const actions: Actions = {
         const { error } = await supabase.auth.signUp({  
             email: registerForm.data.email, 
             password: registerForm.data.password 
+        });
+
+        const userId = supabase.selectUser(registerForm.data.email).id;
+        await supabase.from('projects').insert({
+            name: 'default',
+            user_id: userId,
+            kubeconfig: null
         });
 
         if (error) {
