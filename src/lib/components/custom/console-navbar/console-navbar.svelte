@@ -53,13 +53,11 @@
     
     // For footer
     import * as Avatar from "$lib/components/ui/avatar/index.js";
-	import { CircleUser, MessageCircle, SettingsIcon } from "lucide-svelte";
-	import NewProjectDialog from './new-project-dialog.svelte';
-    
+	import { CircleUser, MessageCircle, SettingsIcon } from "lucide-svelte";    
         
 </script>
 
-<div class="flex-col flex h-screen w-64 bg-zinc-950 border-r">
+<div class="flex-col h-full flex w-64 bg-zinc-900 border-r">
     
     <!-- Top bound -->
     
@@ -69,7 +67,7 @@
         <div class="">
             <div class="space-x-1 flex h-15 p-2 items-center">
                 <div>
-                  <Button class="w-9 h-9 p-2" variant="outline" href="/">
+                  <Button class="w-9 h-9 p-2 bg-zinc-900" variant="outline" href="/">
                     <Anchor />
                   </Button>
                 </div>
@@ -110,7 +108,7 @@
         
         <!-- Navbar content -->
         <div class="grow">
-            <nav class="flex flex-col mt-1 space-y-2 p-5 border-zinc-900">
+            <nav class="flex grow flex-col mt-1 space-y-2 p-5 border-zinc-900">
                 {#each navItems as section}
                     <div class="m-1 px-2 py-1 h-7 text-left text-xs font-semibold text-zinc-300 bg-zinc-900 opacity-65 rounded-md">
                         {section.sectionTitle}
@@ -137,11 +135,11 @@
     <!-- Bottom bound -->
 
     <!-- Navbar footer -->
-    <div class="h-14 p-1 border-t">
+    <div class="h-14 p-1 border-t bg-zinc-900">
         <div class="flex justify-between w-full space-x-3 p-1">
             <div class="flex p-1">
                 <Button class="h-8 w-8 rounded-full" href='/console/account'>
-                    <Avatar.Root class="w-8 h-8 bg-zinc-950 justify-center items-center">
+                    <Avatar.Root class="w-8 h-8 bg-zinc-900 justify-center items-center">
                         <!-- {#if link == null} -->
                             <CircleUser class="h-6 w-6 stroke-zinc-300" />
                         <!-- {:else} -->
@@ -152,8 +150,8 @@
                 </Button>
             </div>
             <div class="flex space-x-1">
-                <Button class="h-9 w-9 p-2" variant="outline"><SettingsIcon /></Button>
-                <Button class="h-9 w-9 p-2" variant="outline"><MessageCircle /></Button>
+                <Button class="h-9 w-9 p-2 bg-zinc-900" variant="outline"><SettingsIcon /></Button>
+                <Button class="h-9 w-9 p-2 bg-zinc-900" variant="outline"><MessageCircle /></Button>
             </div>
         </div>
     </div>
