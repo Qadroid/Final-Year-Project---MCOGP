@@ -49,7 +49,6 @@ export const actions: Actions = {
     }
 }
 
-
 async function deployMinecraft( pvc: k8s.V1PersistentVolumeClaim, deployment: k8s.V1Pod, service: k8s.V1Service) {
     const namespace = user.id;
     // Create PVC
@@ -61,10 +60,4 @@ async function deployMinecraft( pvc: k8s.V1PersistentVolumeClaim, deployment: k8
     const nodePort = createdService.body.spec.ports[0].nodePort;
     console.log(`Minecraft Server running on NodePort: ${nodePort}`);
     return nodePort;
-}
-
-async function deployMinecraftServer({ name, cpu, ram, storage }) {
-    const { deployment, pvc, service } = createMinecraftResources(name, cpu, ram, storage);
-    const nodePort = await deployMinecraft({ deployment, pvc, service });
-    return { nodePort };
 }

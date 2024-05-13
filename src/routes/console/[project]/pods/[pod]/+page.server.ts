@@ -20,7 +20,6 @@ export const load: PageServerLoad = async ({ params }) => {
         const podRes = await k8sClient.readNamespacedPod(pod, 'default');
         resultPod = podRes.body
         resultPod = toPOJO(resultPod)
-        console.log(resultPod)
     } catch (err) {
         console.error(err);
     }
