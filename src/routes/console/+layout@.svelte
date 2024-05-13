@@ -5,7 +5,7 @@
 
 </script>
 
-<div class="flex flex-row">
+<div class="flex flex-row h-full">
     <!-- Navbar -->
     <div>
         <ConsoleNavbar { data } />
