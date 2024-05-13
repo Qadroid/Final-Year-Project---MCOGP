@@ -17,7 +17,6 @@ declare global {
 		}
 
 		interface PageServerLoad {
-			depends: Function
 			locals: {
 				supabase: SupabaseClient
 			}
