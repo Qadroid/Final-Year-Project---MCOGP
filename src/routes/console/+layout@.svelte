@@ -11,7 +11,7 @@
         <ConsoleNavbar { data } />
     </div>
 
-    <div class="flex-col grow">
+    <div class="flex-col grow items-center justify-center">
         <!-- Content -->
         <div class="p-6">
             <slot />
