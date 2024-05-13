@@ -1,18 +1,23 @@
 <script lang=ts>
-    export let projects;
+    export let data
 
+    const { projects } = data
+    
     // For header
     import * as Select from '$lib/components/ui/select/index.js';
     import { Button } from '$lib/components/ui/button/index.js';
     import { Anchor, Plus } from 'lucide-svelte';
+    import { redirect } from '@sveltejs/kit';
 
-    $: selectedProjectName = projects[0].name;
-  
-    // $: {
-    //     if (selectedProjectName) {
-    //         redirect(301, `/console/${selectedProjectName}/dashboard`);
-    //     }
-    // }
+    let selectedProjectName: string = projects[0]?.name || null;
+
+    $: {
+        if (projects.length === 0) {
+            selectedProjectName = '';
+        } else {
+            selectedProjectName = projects[0].name || null;
+        }
+    }
 
     // For content    
     import { page } from '$app/stores';
@@ -22,8 +27,8 @@
             sectionContent: [
                 { title: "Dashboard", href: "dashboard" },
                 { title: "Apps", href: "apps" },
-            ],
-        },
+            ],    
+        },    
         {
             sectionTitle: "Advanced - Resources",
             sectionContent: [
@@ -32,25 +37,26 @@
                 { title: "Deployments", href: "deployments" },
                 { title: "Services", href: "services" },
                 { title: "Ingress", href: "ingress" },
-            ],
-        },
+            ],    
+        },    
         {
             sectionTitle: "Project",
             sectionContent: [
                 { title: "Clusters", href: "clusters" },
                 { title: "Nodes", href: "nodes" },
                 { title: "Plan", href: "plan" }
-            ]
-        }
-    ]
-
+            ]    
+        }    
+    ]    
+    
     let variant = "ghost" // For the buttons in the navbar
-
+    
     // For footer
     import * as Avatar from "$lib/components/ui/avatar/index.js";
 	import { CircleUser, MessageCircle, SettingsIcon } from "lucide-svelte";
-
-
+	import NewProjectDialog from './new-project-dialog.svelte';
+    
+        
 </script>
 
 <div class="flex-col flex h-screen w-64 bg-zinc-950 border-r">
@@ -81,17 +87,17 @@
                             <Select.Label class="text-zinc-400 rounded-md bg-zinc-900 text-center opacity-70 m-1">Projects</Select.Label>
                             
                             {#each projects as project}
-                                <Select.Item value={project.name} label="{project.name}"
-                                >{project.name}</Select.Item
-                                >
+                                <Select.Item value={project.name} label="{project.name}" class="m-1 mt-2 w-[182px] font-semibold">
+                                    {project.name}
+                                </Select.Item>
                             {/each} 
                             
                         </Select.Group>
                             <div class="m-1 mt-2">
-                            <Button class="w-full" disabled variant="outline">
-                                Create new project
-                                <Plus class="w-4 h-4 ml-2" />
-                            </Button>
+                                <Button class="w-full" variant="outline" href="/console/newProject">
+                                    New Project
+                                    <Plus class="w-5 h-5 mx-2"/>
+                                </Button>
                             </div>
                         </Select.Content>
                         <Select.Input name="favoriteproject" />
@@ -135,9 +141,9 @@
         <div class="flex justify-between w-full space-x-3 p-1">
             <div class="flex p-1">
                 <Button class="h-8 w-8 rounded-full" href='/console/account'>
-                    <Avatar.Root class="w-8 h-8">
+                    <Avatar.Root class="w-8 h-8 bg-zinc-950 justify-center items-center">
                         <!-- {#if link == null} -->
-                            <CircleUser class="h-5 w-5" />
+                            <CircleUser class="h-6 w-6 stroke-zinc-300" />
                         <!-- {:else} -->
                             <!-- <Avatar.Image src={} alt={user.displayName} /> -->
                         <!-- {/if} -->
