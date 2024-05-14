@@ -1,0 +1,96 @@
+<script lang="ts">
+    import * as Dialog from '@/components/ui/dialog/index'
+    import { Button, buttonVariants } from '@/components/ui/button/index'
+	import { Anchor } from 'lucide-svelte';
+	import { onMount } from 'svelte';
+    import { supabase } from '@/supabaseClient'
+    import { user, signOut } from '@/stores/auth'
+    
+    // Get session
+    let currentUser: any
+    $: user.subscribe ((value: any) => {
+        currentUser = value
+    })
+
+    // Menu items
+    const menuItems: Map<string, string> = new Map([
+        ['Home', '/'],
+        ['Features', '/features'],
+        ['About', '/about'],
+        ['Docs', '/docs'],
+        ['Contact', '/contact']        
+    ])
+
+    // Check if component is mounted. 
+    let isMounted = false;
+    onMount(() => {
+        isMounted = true;
+    });
+</script>
+
+<!-- Navbar -->
+<div class="flex justify-between w-full text-gray-300 items-center px-1">
+
+    <!-- Left side  -->
+    <div class="flex items-center">
+
+        <!-- Small devices -->
+        <div class="md:hidden flex">
+            {#if isMounted}
+                <Dialog.Root>
+                    
+                    <!-- Activation button -->
+                    <Dialog.Trigger class="{buttonVariants({ variant: "outline"})}">
+                        <Anchor class="h-6 w-6" />
+                    </Dialog.Trigger>
+                    
+                    <Dialog.Content class="w-[200px] rounded-xl">
+                    
+                        <Dialog.Header>
+                        <Dialog.Title class="text-left text-zinc-400">Menu</Dialog.Title>
+                        </Dialog.Header>
+                    
+                        <nav class="flex-col justify-center">
+                            {#each Array.from(menuItems) as [key, value]}
+                                <Button href={value} variant="ghost" class="h-10 w-full justify-start text-xl">{key}</Button>
+                            {/each}
+                        </nav>
+                    
+                    </Dialog.Content>  
+                </Dialog.Root>
+            {/if}
+        </div>
+
+        <!-- Medium+ devices -->
+        <div class="hidden md:flex">
+
+            <!-- Menu -->
+            <nav class="items-center flex">
+                {#each Array.from(menuItems) as [key, value]}
+                    {#if value == '/'}
+                        <Button href={value} variant="ghost" class="h-10 p-3">
+                            <Anchor class="h-5 w-5 mr-3" />
+                            <p class="front-bold">{key}</p>
+                        </Button>
+                    {:else}
+                        <Button href={value} variant="ghost" class="h-10">{key}</Button>
+                    {/if}
+                {/each}
+            </nav>
+        </div>
+    </div>
+
+
+    <!-- Right side -->
+    <div class="flex space-x-2">
+
+        <!-- If user is signed in -->
+        {#if currentUser}
+            <Button href="/console" variant="outline" class="h-10">console</Button>
+            <Button on:click={signOut} variant="destructive" class="h-10">Logout</Button>
+        {:else}
+            <Button href="/login" variant="outline" class="h-10">Login</Button>
+            <Button href="/register" variant="outline" class="h-10">Register</Button>
+        {/if}
+    </div>
+</div>
