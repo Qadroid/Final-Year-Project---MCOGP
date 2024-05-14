@@ -3,7 +3,6 @@ import { fail, superValidate } from "sveltekit-superforms"
 import { registerSchema } from "../AuthSchema";
 import { zod } from "sveltekit-superforms/adapters"
 import { redirect } from "@sveltejs/kit";
-import { supabase } from "$lib/supabaseClient";
 
 export const load: PageServerLoad = async () => {
     return {
@@ -12,7 +11,7 @@ export const load: PageServerLoad = async () => {
 }
 
 export const actions: Actions = {
-    default: async ({ request }) => {
+    default: async ({ request, locals }) => {
         const registerForm = await superValidate(request, zod(registerSchema));
         if (!registerForm.valid) {
             return fail(400, {
@@ -20,7 +19,7 @@ export const actions: Actions = {
             })
         }
 
-        const { error } = await supabase.auth.signUp({  
+        const { error } = await locals.supabase.auth.signUp({  
             email: registerForm.data.email, 
             password: registerForm.data.password 
         });

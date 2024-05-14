@@ -24,7 +24,7 @@
 </script>
 
 <p class="pb-8 text-xl font-bold">Register</p>
-<form use:enhance method="POST" action="?/signup"> 
+<form use:enhance method="POST"> 
   <div class="space-y-1">
     <Form.Field {form} name="email">
       <Form.Control let:attrs>
