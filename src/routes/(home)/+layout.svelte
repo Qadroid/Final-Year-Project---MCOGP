@@ -8,7 +8,7 @@
 
     <!-- Top Navbar -->
     <div class="flex w-screen min-w-full h-12 fixed bg-zinc-950 border"> 
-        <NavBarHome {data} />
+        <NavBarHome { data }/>
     </div>
 
     <!-- Content -->

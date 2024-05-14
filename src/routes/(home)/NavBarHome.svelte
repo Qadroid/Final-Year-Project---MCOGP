@@ -1,16 +1,17 @@
 <script lang="ts">
     import * as Dialog from '@/components/ui/dialog/index'
     import { Button, buttonVariants } from '@/components/ui/button/index'
-	import { Anchor } from 'lucide-svelte';
+	import { Anchor, LogOut, Terminal } from 'lucide-svelte';
 	import { onMount } from 'svelte';
-    import { supabase } from '@/supabaseClient'
-    import { user, signOut } from '@/stores/auth'
     
     // Get session
-    let currentUser: any
-    $: user.subscribe ((value: any) => {
-        currentUser = value
-    })
+    export let data
+	$: ({ session, supabase } = data);
+
+    async function handleSignOut() {
+        let { error } = await supabase.auth.signOut()
+        if (error) throw error
+    }
 
     // Menu items
     const menuItems: Map<string, string> = new Map([
@@ -85,9 +86,15 @@
     <div class="flex space-x-2">
 
         <!-- If user is signed in -->
-        {#if currentUser}
-            <Button href="/console" variant="outline" class="h-10">console</Button>
-            <Button on:click={signOut} variant="destructive" class="h-10">Logout</Button>
+        {#if session}
+            <Button href="/console" variant="outline" class="h-10">
+                Console
+                <Terminal class="h-5 w-5 ml-2" />
+            </Button>
+            <Button on:click={handleSignOut} variant="destructive" class="h-10">
+                Logout
+                <LogOut class="h-5 w-5 ml-2" />
+            </Button>
         {:else}
             <Button href="/login" variant="outline" class="h-10">Login</Button>
             <Button href="/register" variant="outline" class="h-10">Register</Button>
