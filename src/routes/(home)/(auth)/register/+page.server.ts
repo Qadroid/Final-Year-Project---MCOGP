@@ -19,16 +19,36 @@ export const actions: Actions = {
             })
         }
 
-        const { error } = await locals.supabase.auth.signUp({  
-            email: registerForm.data.email, 
-            password: registerForm.data.password 
-        });
+        // Insert the new user into the `users` table
+        const { data: userData, error: userError } = await locals.supabase.auth.signUp({
+                email: registerForm.data.email,
+                password: registerForm.data.password,
+        })
 
-        if (error) {
-            console.log(error);
-            return redirect(302, '/auth')
-        } else {
-            return redirect(303, '/')
+        if (userError) {
+            console.error('Error inserting user:', userError);
+            return fail(500, {
+                registerForm,
+                error: 'Error inserting user',
+            });
         }
+
+        // Insert a new row into the `userSettings` table using the user ID
+        const { error: userSettingsError } = await locals.supabase
+            .from('userSettings')
+            .insert({
+                user_id: userData.user?.id,
+                selectedProject: null,
+            });
+
+        if (userSettingsError) {
+            console.error('Error inserting user settings:', userSettingsError);
+            return fail(500, {
+                registerForm,
+                error: 'Error inserting user settings',
+            });
+        }
+
+        return redirect(303, '/console')
     }
 }
