@@ -4,6 +4,7 @@
     import { goto } from '$app/navigation';
 	import { fetchUser, user } from '@/stores/user';
 	import { getProjects, projects, selectedProject } from '@/stores/projects';
+	import Button from '@/components/ui/button/button.svelte';
 
     let currentUser = null;
 
@@ -37,7 +38,15 @@
         </div>
     
         <div class="flex flex-col grow px-8 py-6 w-full h-full">
-            <slot />
+            {#if !selectedProject}
+                <div class="w-full h-full flex-col">
+                    <p class="flex text-3xl font-bold">No project selected!</p>
+                    <p class="flex text-xl font-semibold">Select a project from the menu or</p>
+                    <Button class="" href="/console/newProject">create a new project</Button>
+                </div>
+            {:else}
+                <slot />
+             {/if}
         </div>
     </div>
 </div>
