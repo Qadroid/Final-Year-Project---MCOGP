@@ -3,14 +3,12 @@
 	import { CircleUser, MessageCircle, SettingsIcon, Anchor, Plus } from "lucide-svelte"
     import Button from '@/components/ui/button/button.svelte'
 	import * as Select from '@/components/ui/select';
-    import { projects, selectedProject } from '@/stores/projects'
-	import { goto } from '$app/navigation';
+    import { projects } from '@/stores/projects'
 
     let disabled = false;
     $: {
         if ($projects?.length === 0) {
             disabled = true;
-            // goto('/console/newProject');
         }
     }
             
@@ -19,24 +17,24 @@
         {
             sectionTitle: "Menu",
             sectionContent: [
-                { title: "Dashboard", href: "dashboard" },
-                { title: "Apps", href: "apps" },
-                { title: "Deployments", href: "deployments" },
+                { title: "Dashboard", href: "" },
+                { title: "Apps", href: "/apps" },
+                { title: "Deployments", href: "/deployments" },
             ],    
         },    
         {
             sectionTitle: "Advanced - Resources",
             sectionContent: [
-                { title: "Pods", href: "pods" },
-                { title: "Volumes", href: "volumes" },
-                { title: "Services", href: "services" },
+                { title: "Pods", href: "/pods" },
+                { title: "Volumes", href: "/volumes" },
+                { title: "Services", href: "/services" },
             ],    
         },    
         {
             sectionTitle: "Project",
             sectionContent: [
-                { title: "Nodes", href: "nodes" },
-                { title: "Plan", href: "plan" }
+                { title: "Nodes", href: "/nodes" },
+                { title: "Plan", href: "/plan" }
             ]    
         }    
     ]    
@@ -72,7 +70,7 @@
                             {/each} 
                         </Select.Group>
                             <div class="m-1 mt-2">
-                                <Button class="w-full justify-between" variant="outline" href="/console/newProject">
+                                <Button class="w-full justify-between bg-zinc-900" variant="outline" href="/console/newProject">
                                     New Project
                                     <Plus class="w-6 h-6 mx-1 border m-2 rounded-md"/>
                                 </Button>
@@ -94,10 +92,10 @@
                         {section.sectionTitle}
                     </div>
                     {#each section.sectionContent as button}
-                        {#if ($page.url.pathname === "/console/" + $selectedProject?.name + "/" + button.href)} 
-                            <Button class="w-full justify-start opacity-75 h-8" variant="default" href="/console/{$selectedProject?.name}/{button.href}">{button.title}</Button>
+                        {#if ($page.url.pathname === "/console" + button.href)} 
+                            <Button class="w-full justify-start opacity-75 h-8 bg-zinc-300" variant="default" href="/console{button.href}">{button.title}</Button>
                         {:else}
-                            <Button class="w-full justify-start opacity-75 h-8" variant="ghost" href="/console/{$selectedProject?.name}/{button.href}">{button.title}</Button>
+                            <Button class="w-full justify-start opacity-75 h-8" variant="ghost" href="/console{button.href}">{button.title}</Button>
                         {/if}
                     {/each}
                     <div id="separator">
