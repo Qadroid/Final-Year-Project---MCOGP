@@ -3,14 +3,17 @@
     import { Button, buttonVariants } from '@/components/ui/button/index'
 	import { Anchor, LogOut, Terminal } from 'lucide-svelte';
 	import { onMount } from 'svelte';
-    
-    // Get session
-    export let data
-	$: ({ session, supabase } = data);
+    import { logout, user } from '@/stores/user';
+
+    // Current user
+    $: currentUser = $user
 
     async function handleSignOut() {
-        let { error } = await supabase.auth.signOut()
-        if (error) throw error
+        try {
+            await logout();
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     // Menu items
@@ -86,7 +89,7 @@
     <div class="flex space-x-2">
 
         <!-- If user is signed in -->
-        {#if session}
+        {#if currentUser}
             <Button href="/console" variant="outline" class="h-10">
                 Console
                 <Terminal class="h-5 w-5 ml-2" />

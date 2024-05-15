@@ -1,28 +1,17 @@
 <script>
     import "../app.css"
-
-	import { goto, invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
+    import { user, fetchUser } from '@/stores/user';
 
-	export let data;
-	$: ({ session, supabase } = data);
+    let currentUser = null;
 
-	onMount(() => {
-		const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
-			if (!newSession) {
-				setTimeout(() => {
-					goto('/', { invalidateAll: true });
-				});
-			}
-			if (newSession?.expires_at !== session?.expires_at) {
-				invalidate('supabase:auth');
-			}
-		});
+    onMount(() => {
+        fetchUser();
+    });
 
-		return () => data.subscription.unsubscribe();
-	});
+    $: currentUser = $user;
 </script>
 
-<div class="w-screen h-screen">
+<main class="w-screen h-screen">
     <slot />
-</div>
+</main>
