@@ -22,7 +22,6 @@ async function createNamespaceIfNotExists(email: string, userId: string) {
         await serverK8sClient.readNamespace(namespaceName);
         console.log(`Namespace ${namespaceName} already exists.`);
     } catch (e) {
-        // Namespace does not exist, create it
         const namespace: k8s.V1Namespace = {
             metadata: {
                 name: namespaceName,
@@ -31,7 +30,6 @@ async function createNamespaceIfNotExists(email: string, userId: string) {
         await serverK8sClient.createNamespace(namespace);
         console.log(`Namespace ${namespaceName} created.`);
 
-        // Create a Service Account in the new namespace
         const serviceAccount: k8s.V1ServiceAccount = {
             metadata: {
                 name: 'default',
@@ -48,7 +46,6 @@ async function createNamespaceIfNotExists(email: string, userId: string) {
         return error;
     }
 
-    // Generate Kubeconfig for the new namespace
     const kubeconfig = `
 apiVersion: v1
 kind: Config
@@ -70,7 +67,6 @@ users:
     token: ${await getServiceAccountToken(namespaceName)}
     `;
 
-    // Add new project to Appwrite
     const projectData = {
         name: 'default',
         kubeConfigText: kubeconfig,
