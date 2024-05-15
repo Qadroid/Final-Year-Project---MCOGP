@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store'
 import { account, databases, ID } from '@/appwrite'
 import type { Models } from 'appwrite';
-import { generateNewUserKubeConfig } from '@/kubernetes/client.server';
+import { userInit } from '@/kubernetes/kubeUtils';
 
 const user = writable<Models.User<Models.Preferences> | null>(null)
 
@@ -22,7 +22,7 @@ const signup = async (email: string, password: string) => {
         throw new Error('Signup failed')
     }
 
-    const newKubeConfig = await generateNewUserKubeConfig(email);
+    const newKubeConfig = await userInit(email);
 
     try {
         await databases.createDocument(
