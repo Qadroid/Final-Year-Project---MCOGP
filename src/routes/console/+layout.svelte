@@ -3,7 +3,7 @@
     import { onMount } from 'svelte';
     import { goto } from '$app/navigation';
 	import { fetchUser, user } from '@/stores/user';
-	import { getProjects, projects } from '@/stores/projects';
+	import { getProjects, projects, selectedProject } from '@/stores/projects';
 
     let currentUser = null;
 
@@ -30,7 +30,14 @@
     </div>
 
     <!-- Content -->
-    <div class="flex grow px-8 py-6">
-        <slot />
+    <div class="flex flex-col w-full">
+        <!-- Placeholder project display -->
+        <div class="flex p-2 bg-zinc-900 opacity-70 items-center">
+            <p class="font-semibold px-2 text-lg">Project:</p> <p class="border py-1 px-2 rounded-md bg-zinc-950">{$selectedProject?.name}</p>
+        </div>
+    
+        <div class="flex flex-col grow px-8 py-6 w-full h-full">
+            <slot />
+        </div>
     </div>
 </div>
