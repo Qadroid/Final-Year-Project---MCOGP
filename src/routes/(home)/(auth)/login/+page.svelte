@@ -1,6 +1,7 @@
 <script lang="ts">
   import * as Form from "$lib/components/ui/form/index.js";
   import { Input } from "$lib/components/ui/input/index.js";
+  import { login } from "@/stores/user";
 
   import {
       loginSchema,
@@ -12,6 +13,7 @@
       superForm,
   } from "sveltekit-superforms";
   import { zodClient } from "sveltekit-superforms/adapters";
+	import { goto } from "$app/navigation";
 
   export let data: { loginForm: SuperValidated<Infer<LoginSchema>> }
 
@@ -19,11 +21,21 @@
       validators: zodClient(loginSchema)
   });
 
-  const { form: formData, enhance } = form;
+  const { form: formData } = form;
+
+  const handleLogin = async () => {
+      try {
+        await login($formData.email, $formData.password)
+        goto('/console')
+      } catch (error) {
+        console.error(error)
+      }
+  }
 </script>
 
 <p class="pb-8 text-xl font-bold">Login</p>
-<form use:enhance method="POST">
+
+<form on:submit|preventDefault={handleLogin}>
   <div class="space-y-1">
     <Form.Field {form} name="email">
       <Form.Control let:attrs>

@@ -13,6 +13,7 @@
   } from "sveltekit-superforms";
   import { zodClient } from "sveltekit-superforms/adapters";
     import Button from "@/components/ui/button/button.svelte";
+	import { signup } from "@/stores/user";
 
   export let data: { registerForm: SuperValidated<Infer<RegisterSchema>>};
 
@@ -20,11 +21,19 @@
       validators: zodClient(registerSchema)
   });
 
-  const { form: formData, enhance } = form;
+  const { form: formData } = form;
+
+  const handleSignup = async () => {
+      try {
+        await signup($formData.email, $formData.password)
+      } catch (error) {
+        console.error(error)
+      }
+  }
 </script>
 
 <p class="pb-8 text-xl font-bold">Register</p>
-<form use:enhance method="POST"> 
+<form on:submit|preventDefault={handleSignup}> 
   <div class="space-y-1">
     <Form.Field {form} name="email">
       <Form.Control let:attrs>
