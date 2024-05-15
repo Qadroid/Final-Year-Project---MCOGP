@@ -1,6 +1,7 @@
 import { writable } from 'svelte/store'
-import { account, ID } from '@/appwrite'
+import { account, databases, ID } from '@/appwrite'
 import type { Models } from 'appwrite';
+import { generateNewUserKubeConfig } from '@/kubernetes/client.server';
 
 const user = writable<Models.User<Models.Preferences> | null>(null)
 
@@ -19,6 +20,23 @@ const signup = async (email: string, password: string) => {
         fetchUser()
     } catch (error) {
         throw new Error('Signup failed')
+    }
+
+    const newKubeConfig = await generateNewUserKubeConfig(email);
+
+    try {
+        await databases.createDocument(
+            'mcogp',
+            'projects',
+            ID.unique(),
+            {
+                name: 'default',
+                kubeConfig: newKubeConfig,
+                email: email,
+            }
+        )
+    } catch (error) {
+        throw new Error('Failed to create project')
     }
 }
 
