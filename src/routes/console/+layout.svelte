@@ -1,17 +1,24 @@
 <script lang="ts">
-	import { projects, selectedProject } from '@/stores/projects';
 	import ConsoleNavbar from './ConsoleNavbar.svelte';
     import { onMount } from 'svelte';
-    import { supabase } from '@/supabaseClient';
+    import { goto } from '$app/navigation';
+	import { fetchUser, user } from '@/stores/user';
+	import { getProjects, projects } from '@/stores/projects';
 
-    onMount(async () => {
-        const { data, error } = await supabase.from('projects').select('*');
-        console.log(data);
-        if (error) {
-            console.error(error);
+    let currentUser = null;
+
+    onMount( async () => {
+        await fetchUser();
+        if (!$user) {
+            goto('/login');
         } else {
-            projects.set(data);
+            currentUser = $user;
         }
+
+        await getProjects();
+        if (!$projects) {
+            console.log('No projects found');
+        } 
     });
 </script>
 
@@ -23,7 +30,7 @@
     </div>
 
     <!-- Content -->
-    <div class="flex grow">
+    <div class="flex grow px-8 py-6">
         <slot />
     </div>
 </div>
