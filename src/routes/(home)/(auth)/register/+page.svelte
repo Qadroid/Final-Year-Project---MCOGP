@@ -20,7 +20,7 @@
       validators: zodClient(registerSchema)
   });
 
-  const { form: formData} = form;
+  const { form: formData } = form;
 
   async function handleRegister() {
     const data = {
