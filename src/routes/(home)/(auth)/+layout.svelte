@@ -1,10 +1,9 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-	import { goto } from "$app/navigation";
 	import { authState, pb } from "@/pocketbase";
+	import { redirect } from "@sveltejs/kit";
 
     if ($authState) {
-        goto('/console');
+        redirect(301, '/console');
     }
 </script>
 
