@@ -5,7 +5,7 @@
 <div class="w-screen h-screen">
 
     <!-- Top Navbar -->
-    <div class="flex w-screen min-w-full h-12 fixed bg-zinc-950 border"> 
+    <div class="flex w-screen min-w-full h-16 fixed"> 
         <NavBarHome />
     </div>
 
