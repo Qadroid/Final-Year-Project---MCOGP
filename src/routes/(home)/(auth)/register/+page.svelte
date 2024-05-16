@@ -1,7 +1,6 @@
 <script lang="ts">
   import * as Form from "$lib/components/ui/form/index.js";
   import { Input } from "$lib/components/ui/input/index.js";
-
   import {
       registerSchema,
   type RegisterSchema,  
@@ -12,8 +11,7 @@
       superForm,
   } from "sveltekit-superforms";
   import { zodClient } from "sveltekit-superforms/adapters";
-    import Button from "@/components/ui/button/button.svelte";
-	import { signup } from "@/stores/user";
+  import Button from "@/components/ui/button/button.svelte";
 
   export let data: { registerForm: SuperValidated<Infer<RegisterSchema>>};
 
@@ -21,19 +19,12 @@
       validators: zodClient(registerSchema)
   });
 
-  const { form: formData } = form;
+  const { form: formData, enhance } = form;
 
-  const handleSignup = async () => {
-      try {
-        await signup($formData.email, $formData.password)
-      } catch (error) {
-        console.error(error)
-      }
-  }
 </script>
 
 <p class="pb-8 text-xl font-bold">Register</p>
-<form on:submit|preventDefault={handleSignup}> 
+<form method="POST" use:enhance> 
   <div class="space-y-1">
     <Form.Field {form} name="email">
       <Form.Control let:attrs>
