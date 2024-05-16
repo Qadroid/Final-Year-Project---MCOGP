@@ -1,14 +1,9 @@
 <script lang="ts">
 	import ConsoleNavbar from './ConsoleNavbar.svelte';
     import { onMount } from 'svelte';
-    import { goto } from '$app/navigation';
 	import { getProjects, projects, selectedProject } from '@/stores/projects';
 	import Button from '@/components/ui/button/button.svelte';
     import { authState } from '@/pocketbase';
-
-    // if (!$authState) {
-    //     goto('/login');
-    // }
 </script>
 
 <div class="w-full h-full flex flex-row">
