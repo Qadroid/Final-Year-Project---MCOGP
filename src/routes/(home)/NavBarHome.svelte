@@ -30,14 +30,14 @@
 </script>
 
 <!-- Navbar -->
-<div class="flex justify-between w-full text-gray-300 items-center px-1">
+<div class="flex justify-between w-full text-gray-300 items-center p-2 m-1 border rounded-xl backdrop-blur-2xl">
 
     <!-- Left side  -->
     <div class="flex items-center">
 
         <!-- Small devices -->
         <div class="md:hidden flex">
-            {#if isMounted}
+            {#if isMounted}ß
                 <Dialog.Root>
                     
                     <!-- Activation button -->
@@ -69,12 +69,11 @@
             <nav class="items-center flex">
                 {#each Array.from(menuItems) as [key, value]}
                     {#if value == '/'}
-                        <Button href={value} variant="ghost" class="h-10 p-3">
-                            <Anchor class="h-5 w-5 mr-3" />
-                            <p class="front-bold">{key}</p>
+                        <Button href={value} variant="ghost" class="h-10 p-2 mx-2">
+                            <Anchor class="h-6 w-6" />
                         </Button>
                     {:else}
-                        <Button href={value} variant="ghost" class="h-10">{key}</Button>
+                        <Button href={value} variant="ghost" class="h-10 mx-2">{key}</Button>
                     {/if}
                 {/each}
             </nav>
