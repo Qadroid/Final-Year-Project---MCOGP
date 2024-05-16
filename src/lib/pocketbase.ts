@@ -8,7 +8,7 @@ const authState = writable(pb.authStore.isValid)
 
 export { pb, currentUser, authState} 
 
-pb.authStore.onChange((auth) => {
+pb.authStore.onChange(() => {
     currentUser.set(pb.authStore.model)
     authState.set(pb.authStore.isValid)
 })
