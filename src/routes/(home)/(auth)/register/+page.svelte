@@ -20,7 +20,7 @@
       validators: zodClient(registerSchema)
   });
 
-  const { form: formData } = form;
+  const { form: formData} = form;
 
   async function handleRegister() {
     const data = {
@@ -39,7 +39,7 @@
 </script>
 
 <p class="pb-8 text-xl font-bold">Register</p>
-<form on:submit={handleRegister}> 
+<form> 
   <div class="space-y-1">
     <Form.Field {form} name="email">
       <Form.Control let:attrs>
@@ -67,6 +67,6 @@
       <Form.FieldErrors />
     </Form.Field>
   </div>
-  <Button type="submit">Register</Button>
+  <Button on:click={handleRegister}>Register</Button>
 </form>
   

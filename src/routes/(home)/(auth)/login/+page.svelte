@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as Form from "$lib/components/ui/form/index.js";
   import { Input } from "$lib/components/ui/input/index.js";
-	import { pb } from "@/pocketbase";
+  import Button from "@/components/ui/button/button.svelte";
   import {
       loginSchema,
       type LoginSchema,  
@@ -12,7 +12,7 @@
       superForm,
   } from "sveltekit-superforms";
   import { zodClient } from "sveltekit-superforms/adapters";
-	import { goto } from "$app/navigation";
+	import { pb } from "@/pocketbase";
 
   export let data: { loginForm: SuperValidated<Infer<LoginSchema>> }
 
@@ -24,17 +24,20 @@
 
   async function handleLogin() {
     try {
-      await pb.collection('users').authWithPassword($formData.email, $formData.password);
-      goto('/console');
-    } catch (error) {
+      pb.collection("users").authWithPassword($formData.email, $formData.password);
+      console.log("Login successful");
+    } catch(error) {
+      console.error("Login failed");
       console.error(error);
     }
   }
+  
+  
 </script>
 
 <p class="pb-8 text-xl font-bold">Login</p>
 
-<form on:submit={handleLogin}>
+<form>
   <div class="space-y-1">
     <Form.Field {form} name="email">
       <Form.Control let:attrs>
@@ -53,6 +56,6 @@
       <Form.FieldErrors />
     </Form.Field>
   </div>
-  <Form.Button type="submit">Login</Form.Button>
+  <Button on:click={handleLogin} >Login</Button>
 </form>
   
