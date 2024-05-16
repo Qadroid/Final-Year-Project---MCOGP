@@ -4,11 +4,14 @@
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { projectSchema, type ProjectSchema } from './projectSchema';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { pb } from '@/pocketbase';
-    import yaml from 'js-yaml';
-	import { FieldErrors } from 'formsnap';
 	import { Textarea } from '@/components/ui/textarea';
-	import Button from '@/components/ui/button/button.svelte';
+	import { currentUser, pb } from '@/pocketbase';
+    import { Button } from '@/components/ui/button/';
+    import { encode } from 'js-base64';
+
+    function yamlToBase64(yamlString: string): string {
+      return encode(yamlString);
+    }
 
     export let data: { projectForm: SuperValidated<Infer<ProjectSchema>>};
     
@@ -16,27 +19,18 @@
         validators: zodClient(projectSchema)
     });
 
-    const { form: formData } = form;
-
-    async function convertStringToBase64(input: string) {
-        const userKubeConfigYaml = yaml.dump(input);
-        const userKubeConfigBase64 = Buffer.from(userKubeConfigYaml).toString('base64');
-        return userKubeConfigBase64;
-    }
+    const { form: formData, enhance } = form;
 
     async function handleCreateProject() {
-        const kubeConfig = await convertStringToBase64($formData.kubeConfig);
+        const kubeConfig = await yamlToBase64($formData.kubeConfig);
 
-        if (!pb.authStore.model) {
-            console.error('User not authenticated');
-            return;
-        }
+        if (!$currentUser) return console.error('User not found')
 
         const data = {
             "name": $formData.name,
             "description": $formData.description,
             "kubeConfig": kubeConfig,
-            "owner": pb.authStore.model.id
+            "owner": $currentUser.id
         }
 
         try {
@@ -53,7 +47,7 @@
         <p class="text-lg font-semibold p-2">Add a project to manage resources on your cluster</p>
     </div>
     <div class="space-y-1 w-[400px]">
-        <form on:submit={handleCreateProject}>
+        <form>
             <Form.Field {form} name="name">
                 <Form.Control let:attrs>
                     <Form.Label for="name">Project Name</Form.Label>
@@ -82,7 +76,14 @@
                     <Form.FieldErrors />
                 </Form.Control>
             </Form.Field>
-            <Form.Button type="submit">Create Project</Form.Button>
+            <Form.Field {form} name="owner">
+                <Form.Control>
+                    {#if $currentUser}
+                        <Input type="hidden" value={$formData.owner = $currentUser.id} readonly />
+                    {/if}
+                </Form.Control>
+            </Form.Field>
+            <Button on:click={handleCreateProject}>Create Project</Button>
         </form>
     </div>
 </div>
