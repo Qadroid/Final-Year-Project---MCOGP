@@ -3,17 +3,7 @@
 	import { CircleUser, MessageCircle, SettingsIcon, Anchor, Plus } from "lucide-svelte"
     import Button from '@/components/ui/button/button.svelte'
 	import * as Select from '@/components/ui/select';
-    import { projects, selectedProject } from '@/stores/projects'
-	import { onMount } from 'svelte';
-
-    // onMount(() => {
-    //     if (!$selectedProject) {
-    //         if ($projects.length > 0) {
-    //             selectedProject.set($projects[0]);
-    //         }
-    //     }
-    //     console.log($projects[0]);
-    // });
+    import { projects } from '@/stores/projects'
             
     // For content    
     const navItems = [
