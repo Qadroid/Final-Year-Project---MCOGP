@@ -12,6 +12,7 @@
   } from "sveltekit-superforms";
   import { zodClient } from "sveltekit-superforms/adapters";
   import Button from "@/components/ui/button/button.svelte";
+	import { pb } from "@/pocketbase";
 
   export let data: { registerForm: SuperValidated<Infer<RegisterSchema>>};
 
@@ -19,12 +20,26 @@
       validators: zodClient(registerSchema)
   });
 
-  const { form: formData, enhance } = form;
+  const { form: formData } = form;
+
+  async function handleRegister() {
+    const data = {
+      "email": $formData.email, 
+      "password": $formData.password,
+      "passwordConfirm": $formData.confirmPassword,
+    }
+
+    try {
+        await pb.collection('users').create(data)
+    } catch (error) {
+        console.error(error)
+    }
+  }
 
 </script>
 
 <p class="pb-8 text-xl font-bold">Register</p>
-<form method="POST" use:enhance> 
+<form on:submit={handleRegister}> 
   <div class="space-y-1">
     <Form.Field {form} name="email">
       <Form.Control let:attrs>

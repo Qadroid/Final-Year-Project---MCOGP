@@ -2,25 +2,13 @@
 	import ConsoleNavbar from './ConsoleNavbar.svelte';
     import { onMount } from 'svelte';
     import { goto } from '$app/navigation';
-	import { fetchUser, user } from '@/stores/user';
 	import { getProjects, projects, selectedProject } from '@/stores/projects';
 	import Button from '@/components/ui/button/button.svelte';
+    import { authState } from '@/pocketbase';
 
-    let currentUser = null;
-
-    onMount( async () => {
-        await fetchUser();
-        if (!$user) {
-            goto('/login');
-        } else {
-            currentUser = $user;
-        }
-
-        await getProjects();
-        if (!$projects) {
-            console.log('No projects found');
-        } 
-    });
+    // if (!$authState) {
+    //     goto('/login');
+    // }
 </script>
 
 <div class="w-full h-full flex flex-row">
@@ -34,7 +22,7 @@
     <div class="flex flex-col w-full">
         <!-- Placeholder project display -->
         <div class="flex p-2 bg-zinc-900 opacity-70 items-center">
-            <p class="font-semibold px-2 text-lg">Project:</p> <p class="border py-1 px-2 rounded-md bg-zinc-950">{$selectedProject?.name}</p>
+            <!-- <p class="font-semibold px-2 text-lg">Project:</p> <p class="border py-1 px-2 rounded-md bg-zinc-950">{$selectedProject.name}</p> -->
         </div>
     
         <div class="flex flex-col grow px-8 py-6 w-full h-full">

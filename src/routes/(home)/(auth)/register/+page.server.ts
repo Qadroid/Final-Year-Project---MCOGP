@@ -1,31 +1,13 @@
-import type { Actions, PageServerLoad } from "./$types";
-import { fail, superValidate } from "sveltekit-superforms"
+import type { PageServerLoad } from "./$types";
+import { superValidate } from "sveltekit-superforms"
 import { registerSchema } from "../AuthSchema";
 import { zod } from "sveltekit-superforms/adapters"
-import { login, signup } from "@/stores/user";
-import { generateNewUserKubeConfig } from "@/kubernetes/kubernetes";
-import { databases, ID, account } from "@/appwrite";
 
 export const load: PageServerLoad = async () => {
     return {
         registerForm: await superValidate(zod(registerSchema)),
     };
 }
-
-export const actions: Actions = {
-    default: async ({ request }) => {
-        const registerForm = await superValidate(request, zod(registerSchema));
-        if (!registerForm.valid) {
-            return fail(400, {
-                registerForm,
-            })
-        }
-
-        try {
-            await signup(registerForm.data.email, registerForm.data.password)
-        } catch (error) {
-            console.error(error)
-        }
 
         // try {
         //     await login(registerForm.data.email, registerForm.data.password)
@@ -53,6 +35,3 @@ export const actions: Actions = {
         //     console.error(error)
         //     console.log("Kubeconfig generation failed")
         // }
-        
-    }
-}

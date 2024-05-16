@@ -3,14 +3,11 @@
     import { Button, buttonVariants } from '@/components/ui/button/index'
 	import { Anchor, LogOut, Terminal } from 'lucide-svelte';
 	import { onMount } from 'svelte';
-    import { logout, user } from '@/stores/user';
-
-    // Current user
-    $: currentUser = $user
+	import { currentUser, pb } from '@/pocketbase';
 
     async function handleSignOut() {
         try {
-            await logout();
+            pb.authStore.clear()
         } catch (error) {
             console.error(error);
         }
@@ -89,7 +86,7 @@
     <div class="flex space-x-2">
 
         <!-- If user is signed in -->
-        {#if currentUser}
+        {#if $currentUser}
             <Button href="/console" variant="outline" class="h-10">
                 Console
                 <Terminal class="h-5 w-5 ml-2" />

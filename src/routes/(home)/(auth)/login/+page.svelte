@@ -1,6 +1,7 @@
 <script lang="ts">
   import * as Form from "$lib/components/ui/form/index.js";
   import { Input } from "$lib/components/ui/input/index.js";
+	import { pb } from "@/pocketbase";
   import {
       loginSchema,
       type LoginSchema,  
@@ -11,6 +12,7 @@
       superForm,
   } from "sveltekit-superforms";
   import { zodClient } from "sveltekit-superforms/adapters";
+	import { goto } from "$app/navigation";
 
   export let data: { loginForm: SuperValidated<Infer<LoginSchema>> }
 
@@ -18,12 +20,21 @@
       validators: zodClient(loginSchema)
   });
 
-  const { form: formData, enhance } = form;
+  const { form: formData } = form;
+
+  async function handleLogin() {
+    try {
+      await pb.collection('users').authWithPassword($formData.email, $formData.password);
+      goto('/console');
+    } catch (error) {
+      console.error(error);
+    }
+  }
 </script>
 
 <p class="pb-8 text-xl font-bold">Login</p>
 
-<form method="POST" use:enhance>
+<form on:submit={handleLogin}>
   <div class="space-y-1">
     <Form.Field {form} name="email">
       <Form.Control let:attrs>

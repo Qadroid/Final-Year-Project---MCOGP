@@ -1,14 +1,11 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { fetchUser, user } from "@/stores/user";
 	import { goto } from "$app/navigation";
+	import { authState, pb } from "@/pocketbase";
 
-    onMount( async () => {
-        await fetchUser();
-        if ($user) {
-            goto('/console');
-        }
-    });
+    if ($authState) {
+        goto('/console');
+    }
 </script>
 
 <div class="w-full h-full flex flex-col justify-center items-center">

@@ -3,14 +3,17 @@
 	import { CircleUser, MessageCircle, SettingsIcon, Anchor, Plus } from "lucide-svelte"
     import Button from '@/components/ui/button/button.svelte'
 	import * as Select from '@/components/ui/select';
-    import { projects } from '@/stores/projects'
+    import { projects, selectedProject } from '@/stores/projects'
+	import { onMount } from 'svelte';
 
-    let disabled = false;
-    $: {
-        if ($projects?.length === 0) {
-            disabled = true;
-        }
-    }
+    // onMount(() => {
+    //     if (!$selectedProject) {
+    //         if ($projects.length > 0) {
+    //             selectedProject.set($projects[0]);
+    //         }
+    //     }
+    //     console.log($projects[0]);
+    // });
             
     // For content    
     const navItems = [
@@ -63,8 +66,8 @@
                         </Select.Trigger>
                         <Select.Content class="bg-zinc-900 drop-shadow-lg">
                         <Select.Group>                            
-                            {#each $projects ?? [] as project}
-                                <Select.Item value={project.$id} label="{project.name}" class="m-1 mt-2 w-[182px] font-semibold">
+                            {#each $projects as project}
+                                <Select.Item value={project.id} label="{project.name}" class="m-1 mt-2 w-[182px] font-semibold">
                                     {project.name}
                                 </Select.Item>
                             {/each} 
