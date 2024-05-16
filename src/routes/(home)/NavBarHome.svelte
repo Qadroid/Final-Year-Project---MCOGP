@@ -37,7 +37,7 @@
 
         <!-- Small devices -->
         <div class="md:hidden flex">
-            {#if isMounted}ß
+            {#if isMounted}
                 <Dialog.Root>
                     
                     <!-- Activation button -->
