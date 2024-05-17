@@ -1,5 +1,5 @@
 <script lang="ts">
-	import NavBarHome from './NavBarHome.svelte';
+	import NavBarHome from '@/components/custom/NavBarHome.svelte';
 </script>
 
 <div class="w-screen h-screen">
