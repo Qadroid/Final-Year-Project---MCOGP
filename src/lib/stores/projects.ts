@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { writable } from 'svelte/store';
-import { pb } from '@/pocketbase';
-import { type RecordModel } from 'pocketbase';
+import { get, writable } from 'svelte/store';
+import { pb, currentUser } from '@/pocketbase';
 
-export const projects = writable<RecordModel[]>([]);
-export const selectedProject = writable<RecordModel>(undefined);
+export const projects = writable<any>(null)
+export const selectedProject = writable<any>(null)
 
 async function getProjects() {    
     try {
@@ -19,4 +18,12 @@ async function getProjects() {
     }
 }
 
-export { getProjects }
+async function getUserId() {
+    const user = get(currentUser)
+    if (!user) {
+        throw new Error('User not found')
+    }
+    return user.id
+}
+
+export { getProjects, getUserId}
