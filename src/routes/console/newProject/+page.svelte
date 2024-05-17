@@ -8,6 +8,7 @@
 	import { currentUser, pb } from '@/pocketbase';
     import { Button } from '@/components/ui/button/';
     import { encode } from 'js-base64';
+	import { goto } from '$app/navigation';
 
     function yamlToBase64(yamlString: string): string {
       return encode(yamlString);
@@ -21,7 +22,10 @@
 
     const { form: formData, enhance } = form;
 
+    let loading = false;
+
     async function handleCreateProject() {
+        loading = true;
         const kubeConfig = await yamlToBase64($formData.kubeConfig);
 
         if (!$currentUser) return console.error('User not found')
@@ -38,6 +42,9 @@
         } catch (error) {
             console.error(error)
         }
+        loading = false;
+        alert('Project created successfully')
+        goto('/console/')
     }
 </script>
 
@@ -83,7 +90,11 @@
                     {/if}
                 </Form.Control>
             </Form.Field>
-            <Button on:click={handleCreateProject}>Create Project</Button>
+            {#if loading}
+                <Button on:click={handleCreateProject} disabled>Create Project</Button>
+            {:else}
+                <Button on:click={handleCreateProject}>Create Project</Button>
+            {/if}
         </form>
     </div>
 </div>
