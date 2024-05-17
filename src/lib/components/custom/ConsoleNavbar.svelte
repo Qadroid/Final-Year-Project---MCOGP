@@ -1,9 +1,8 @@
 <script lang="ts">
     import { page } from '$app/stores'
-	import { CircleUser, MessageCircle, SettingsIcon, Anchor, Plus } from "lucide-svelte"
+	import { CircleUser, MessageCircle, SettingsIcon, Anchor } from "lucide-svelte"
     import Button from '@/components/ui/button/button.svelte'
-	import * as Select from '@/components/ui/select';
-    import { projects } from '@/stores/projects'
+	import ProjectSwitcher from '@/components/custom/ProjectSwitcher.svelte';
             
     // For content    
     const navItems = [
@@ -31,11 +30,13 @@
             ]    
         }    
     ]    
+
+    let showModal: boolean = false
     
 </script>
 
 
-<div class="flex-col flex h-screen w-64 bg-zinc-900 border-r">
+<div class="flex-col flex min-h-screen w-64 bg-zinc-900 border-r">
     
     <!-- Top bound -->
     
@@ -43,40 +44,19 @@
         
         <!-- Navbar header -->
         <div class="justify-between w-full">
-            <div class="space-x-1 flex h-15 p-2 items-center">
+            <div class="space-x-1 flex h-22 p-2 items-center">
                 <div>
-                  <Button class="w-9 h-9 p-2 bg-zinc-900" variant="outline" href="/">
+                  <Button class="w-10 h-10 p-2 bg-zinc-900 flex" variant="outline" href="/">
                     <Anchor />
                   </Button>
                 </div>
-                <div>
-                    <Select.Root>
-                        <Select.Trigger class="w-[200px] bg-zinc-900">
-                        <Select.Value placeholder="Select a project" />
-                        </Select.Trigger>
-                        <Select.Content class="bg-zinc-900 drop-shadow-lg">
-                        <Select.Group>                            
-                            {#each $projects as project}
-                                <Select.Item value={project.id} label="{project.name}" class="m-1 mt-2 w-[182px] font-semibold">
-                                    {project.name}
-                                </Select.Item>
-                            {/each} 
-                        </Select.Group>
-                            <div class="m-1 mt-2">
-                                <Button class="w-full justify-between bg-zinc-900" variant="outline" href="/console/newProject">
-                                    New Project
-                                    <Plus class="w-6 h-6 mx-1 border m-2 rounded-md"/>
-                                </Button>
-                            </div>
-                        </Select.Content>
-                        <Select.Input />
-                    </Select.Root>
+                <div class="w-full h-10 flex">
+                    <ProjectSwitcher />
                 </div>
             </div>
         </div>
     
-        <div class="border-b"/>
-        
+    <div class="border-b"/>
         <!-- Navbar content -->
         <div class="grow">
             <nav class="flex flex-col mt-1 space-y-2 p-5 border-zinc-900">
@@ -96,11 +76,9 @@
                         <div class="border-b"/>
                         <div class="pb-5"/>
                     </div>
-                    
                 {/each}  
             </nav> 
         </div>
-
     </div>
 
     <!-- Bottom bound -->
