@@ -1,89 +1,100 @@
 <script lang="ts">
-    import * as Form from "$lib/components/ui/form/index.js";
-    import { Textarea } from "$lib/components/ui/textarea/index.js";
-    import * as RadioGroup from "$lib/components/ui/radio-group/index.js";
-    import { Input } from "$lib/components/ui/input/index.js";
-    import {
-      superForm,
-    } from "sveltekit-superforms";
-    import { projectSchema } from "./project-schema";
-    import { zodClient } from "sveltekit-superforms/adapters";
+    import * as Form from '@/components/ui/form/index';
+	import Input from '@/components/ui/input/input.svelte';
+	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
+	import { projectSchema, type ProjectSchema } from './projectSchema';
+	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { Textarea } from '@/components/ui/textarea';
+	import { currentUser, pb } from '@/pocketbase';
+    import { Button } from '@/components/ui/button/';
+    import { encode } from 'js-base64';
+	import { goto } from '$app/navigation';
 
-    export let data
-    const { projectForm } = data
+    function yamlToBase64(yamlString: string): string {
+      return encode(yamlString);
+    }
 
-    let kubeConfigType = "file";
-
-    const form = superForm(projectForm, {
+    export let data: { projectForm: SuperValidated<Infer<ProjectSchema>>};
+    
+    const form = superForm( data.projectForm, {
         validators: zodClient(projectSchema)
-    })
+    });
 
-    const { form: formData, enhance } = form
+    const { form: formData, enhance } = form;
 
+    let loading = false;
 
-    $: kubeConfigType = $formData.kubeConfigType;
+    async function handleCreateProject() {
+        loading = true;
+        const kubeConfig = await yamlToBase64($formData.kubeConfig);
+
+        if (!$currentUser) return console.error('User not found')
+
+        const data = {
+            "name": $formData.name,
+            "description": $formData.description,
+            "kubeConfig": kubeConfig,
+            "owner": $currentUser.id
+        }
+
+        try {
+            await pb.collection('projects').create(data)
+        } catch (error) {
+            console.error(error)
+        }
+        loading = false;
+        alert('Project created successfully')
+        goto('/console/')
+    }
 </script>
 
-<div class="w-96">
-    <form method="POST" use:enhance action="?/newProject">
-        <div>
+<div class="w-full h-full items-center justify-center flex flex-col">
+    <div class="p-8">
+        <p class="text-2xl font-bold p-2">Create Project</p>
+        <p class="text-lg font-semibold p-2">Add a project to manage resources on your cluster</p>
+    </div>
+    <div class="space-y-1 w-[400px]">
+        <form>
             <Form.Field {form} name="name">
                 <Form.Control let:attrs>
                     <Form.Label for="name">Project Name</Form.Label>
-                    <Input id="name" placeholder="Enter project name" />
+                    <Input {...attrs} type="text" bind:value={$formData.name} />
+                    <Form.Description>A memorable name for your project</Form.Description>
                     <Form.FieldErrors />
                 </Form.Control>
             </Form.Field>
-        </div>
-        <div>
             <Form.Field {form} name="description">
                 <Form.Control let:attrs>
                     <Form.Label for="description">Project Description</Form.Label>
-                    <Input id="description" placeholder="Enter project description" />
+                    <Input {...attrs} type="text" bind:value={$formData.description} />
+                    <Form.Description>A brief description of your project</Form.Description>
                     <Form.FieldErrors />
                 </Form.Control>
             </Form.Field>
-        </div>
-        <div class="flex justify-center">
-            <Form.Fieldset {form} name="kubeConfigType" class="">
-                <Form.Legend>How would you like to provide your KubeConfig file?</Form.Legend>
-                <RadioGroup.Root bind:value={$formData.kubeConfigType} class="">
-                    <div>
-                        <Form.Control let:attrs>
-                            <RadioGroup.Item value="upload" {...attrs} />
-                            <Form.Label class="font-normal">Upload KubeConfig as file</Form.Label>
-                        </Form.Control>
-                    </div>
-                    <div>
-                        <Form.Control let:attrs>
-                            <RadioGroup.Item value="paste" {...attrs} />
-                            <Form.Label class="font-normal">Paste KubeConfig</Form.Label>
-                        </Form.Control>
-                    </div>
-                    <RadioGroup.Input name="KubeConfigType" />
+            <Form.Field {form} name="kubeConfig">
+                <Form.Control let:attrs>
+                    <Form.Label for="kubeConfig">KubeConfig YAML</Form.Label>
+                    <Textarea
+                        {...attrs}
+                        class="resize-none"
+                        bind:value={$formData.kubeConfig}
+                    />                    
+                    <Form.Description>Insert your clusters KubeConfig file in YAML form</Form.Description>
                     <Form.FieldErrors />
-                </RadioGroup.Root>
-            </Form.Fieldset>
-        </div>
-        <div>
-            {#if kubeConfigType === "upload"}
-                <Form.Field {form} name="kubeConfigFile">
-                    <Form.Control let:attrs>
-                        <Form.Label for="kubeConfigFile">Kube Config File</Form.Label>
-                        <Input id="kubeConfigFile" type="file" />
-                        <Form.FieldErrors />
-                    </Form.Control>
-                </Form.Field>
-            {:else if kubeConfigType === "paste"}
-                <Form.Field {form} name="kubeConfigPaste">
-                    <Form.Control let:attrs>
-                        <Form.Label for="kubeConfigPaste">Paste Kube Config</Form.Label>
-                        <Textarea id="kubeConfigPaste" placeholder="Paste kube config here" />
-                        <Form.FieldErrors />
-                    </Form.Control>
-                </Form.Field>
+                </Form.Control>
+            </Form.Field>
+            <Form.Field {form} name="owner">
+                <Form.Control>
+                    {#if $currentUser}
+                        <Input type="hidden" value={$formData.owner = $currentUser.id} readonly />
+                    {/if}
+                </Form.Control>
+            </Form.Field>
+            {#if loading}
+                <Button on:click={handleCreateProject} disabled>Create Project</Button>
+            {:else}
+                <Button on:click={handleCreateProject}>Create Project</Button>
             {/if}
-        </div>
-        <Form.Button>Submit</Form.Button>
-    </form>
-  </div>
+        </form>
+    </div>
+</div>

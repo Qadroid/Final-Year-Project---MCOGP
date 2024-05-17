@@ -1,13 +1,9 @@
-<script>
-	import Button from "@/components/ui/button/button.svelte";
-
+<script lang="ts">
+    import { Construction } from "lucide-svelte";
 </script>
-<div class="flex-col self-center p-3 text-center h-screen">
-    <div>
-        <h1 class="font-bold text-red-500 text-3xl p-3">ERROR: 404</h1>
-        <p>Page does not exist</p>
-    </div>
-    <div>
-        <Button href="/" variant="secondary" class="mt-3">Go back to home</Button>
-    </div>
+
+<div class="w-full h-full items-center justify-center flex flex-col">
+    <Construction class="h-96 w-96 flex" />
+    <p class="text-2xl font-bold">ERROR: </p>
+    <p class="text-2xl">Page not found</p>
 </div>

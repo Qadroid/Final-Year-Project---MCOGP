@@ -1,85 +1,99 @@
-import { KubeConfig, CoreV1Api, V1ServiceAccount } from '@kubernetes/client-node';
+import * as k8s from '@kubernetes/client-node';
 import { KUBECONFIG_BASE64 } from '$env/static/private';
+import { emailToNamespace } from './kubeUtils';
+import yaml from 'js-yaml';
 
-// Helper function to initialize Kubernetes API client
-function getK8sClient(encodedKubeConfig: string) {
-    const kubeConfigContent = Buffer.from(encodedKubeConfig, 'base64').toString('utf-8');
-    const kubeConfig = new KubeConfig();
-    kubeConfig.loadFromString(kubeConfigContent);
-    return kubeConfig.makeApiClient(CoreV1Api);
+// Server only use
+const kubeConfigContent = Buffer.from(KUBECONFIG_BASE64, 'base64').toString('utf-8');
+const kubeConfig = new k8s.KubeConfig();
+kubeConfig.loadFromString(kubeConfigContent);
+const serverK8sClient = kubeConfig.makeApiClient(k8s.CoreV1Api);
+const serverK8sRbacClient = kubeConfig.makeApiClient(k8s.RbacAuthorizationV1Api);
+
+let namespace: string
+
+async function createNamespace(email: string) {
+    const namespace = 'namespace-' + emailToNamespace(email);
+    const namespaceResource = { metadata: { name: namespace } };
+    await serverK8sClient.createNamespace(namespaceResource);
+    return namespace;
 }
 
-const k8sClient = getK8sClient(KUBECONFIG_BASE64);
+async function createServiceAccount(email: string, namespace: string) {
+    const serviceAccountName = 'sa-' + emailToNamespace(email);
+    const serviceAccount = { metadata: { name: serviceAccountName, namespace: namespace } };
+    await serverK8sClient.createNamespacedServiceAccount(namespace, serviceAccount);
 
-// Async function to create a namespace if it doesn't exist
-async function ensureNamespaceExists(userId: string) {
-    try {
-        await k8sClient.createNamespace({ metadata: { name: userId }});
-        console.log('Namespace created');
-        return true;
-    } catch (error) {
-        console.error('Error creating namespace:', error);
-        return false;
-    }
+    const secretName = `${serviceAccountName}-token`;
+    const secret = {
+        metadata: {
+            name: secretName,
+            namespace: namespace,
+            annotations: { 'kubernetes.io/service-account.name': serviceAccountName }
+        },
+        type: 'kubernetes.io/service-account-token'
+    };
+    await serverK8sClient.createNamespacedSecret(namespace, secret);
+
+    return serviceAccountName;
 }
 
-// Async function to create a service account within the namespace
-async function ensureServiceAccountExists(userId: string) {
-    const serviceAccount = new V1ServiceAccount({ metadata: { name: userId }});
-    try {
-        await k8sClient.createNamespacedServiceAccount(userId, serviceAccount);
-        console.log('Service Account created');
-        return true;
-    } catch (error) {
-        console.error('Error creating Service Account:', error);
-        return false;
-    }
+async function bindServiceAccount(email: string, namespace: string, serviceAccountName: string) {
+    const roleBinding = {
+        apiVersion: 'rbac.authorization.k8s.io/v1',
+        kind: 'RoleBinding',
+        metadata: { name: 'rolebinding-' + serviceAccountName, namespace: namespace },
+        subjects: [{ kind: 'ServiceAccount', name: serviceAccountName, namespace: namespace }],
+        roleRef: { kind: 'ClusterRole', name: 'admin', apiGroup: 'rbac.authorization.k8s.io' }
+    };
+    await serverK8sRbacClient.createNamespacedRoleBinding(namespace, roleBinding);
 }
 
-// Function to retrieve and configure a user-specific kubeconfig
-async function getUserKubeConfig(userId: string) {
-    try {
-        const { body: { secrets: [{ name: secretName }] } } = await k8sClient.readNamespacedServiceAccount(userId, userId);
-        const { body: { data: { token } } } = await k8sClient.readNamespacedSecret(secretName, userId);
-        const decodedToken = Buffer.from(token, 'base64').toString('utf-8');
-        
-        const currentCluster = k8sClient.getCurrentCluster();
-        const kubeConfig = new KubeConfig();
-        kubeConfig.loadFromOptions({
-            clusters: [currentCluster],
-            users: [{ name: userId, user: { token: decodedToken }}],
-            contexts: [{ name: userId, context: { cluster: currentCluster.name, user: userId }}],
-            currentContext: userId
-        });
-
-        return JSON.stringify(kubeConfig.exportConfig(), null, 2);
-    } catch (error) {
-        console.error('Error fetching Service Account:', error);
-        return null;
-    }
+async function createClusterRoleBinding(email: string, namespace: string, serviceAccountName: string) {
+    const clusterRoleBinding = {
+        apiVersion: 'rbac.authorization.k8s.io/v1',
+        kind: 'ClusterRoleBinding',
+        metadata: { name: 'clusterrolebinding-' + serviceAccountName },
+        subjects: [{ kind: 'ServiceAccount', name: serviceAccountName, namespace: namespace }],
+        roleRef: { kind: 'ClusterRole', name: 'admin', apiGroup: 'rbac.authorization.k8s.io' }
+    };
+    await serverK8sRbacClient.createClusterRoleBinding(clusterRoleBinding);
 }
 
-// Controller function to handle new project creation
-async function handleNewDefaultProject(user, supabase) {
-    try {
-        const namespaceCreated = await ensureNamespaceExists(user.id);
-        const serviceAccountCreated = await ensureServiceAccountExists(user.id);
-    
-        if (namespaceCreated && serviceAccountCreated) {
-            const kubeConfigJson = await getUserKubeConfig(user.id);
-            const { data, error } = await supabase.from('projects').insert({
-                name: 'default',
-                user_id: user.id,
-                kubeconfig: kubeConfigJson
-            }).single();
-
-            if (error) throw error;
-            return true;
-        }
-    } catch (error) {
-        console.error('Error creating project:', error);
-        return false;
-    }
+async function getServiceAccountToken(email: string, namespace: string, serviceAccountName: string) {
+    const secretList = await serverK8sClient.listNamespacedSecret(namespace);
+    const secret = secretList.body.items.find(secret => secret.metadata.annotations &&
+        secret.metadata.annotations['kubernetes.io/service-account.name'] === serviceAccountName);
+    const token = Buffer.from(secret.data.token, 'base64').toString('utf-8');
+    return token;
 }
 
-export { handleNewDefaultProject };
+async function generateKubeConfig(email: string, token: string) {
+    const userName = 'user-' + emailToNamespace(email);
+    const clusterName = kubeConfig.getCurrentCluster().name;
+    const server = kubeConfig.getCurrentCluster().server;
+    const caData = kubeConfig.getCurrentCluster().caData;
+    const contextName = userName + '@' + clusterName;
+
+    const kubeConfigForUser = {
+        apiVersion: 'v1',
+        kind: 'Config',
+        clusters: [{ name: clusterName, cluster: { server: server, 'certificate-authority-data': caData } }],
+        users: [{ name: userName, user: { token: token } }],
+        contexts: [{ name: contextName, context: { cluster: clusterName, user: userName, namespace: 'namespace-' + emailToNamespace(email) } }],
+        'current-context': contextName,
+    };
+
+    return kubeConfigForUser;
+}
+
+export async function generateNewUserKubeConfig(email: string) {
+    namespace = await createNamespace(email);
+    const serviceAccountName = await createServiceAccount(email, namespace);
+    await bindServiceAccount(email, namespace, serviceAccountName);
+    await createClusterRoleBinding(email, namespace, serviceAccountName);
+    const token = await getServiceAccountToken(email, namespace, serviceAccountName);
+    const userKubeConfig = await generateKubeConfig(email, token);
+    const userKubeConfigYaml = yaml.dump(userKubeConfig);
+    return Buffer.from(userKubeConfigYaml).toString('base64');
+}
