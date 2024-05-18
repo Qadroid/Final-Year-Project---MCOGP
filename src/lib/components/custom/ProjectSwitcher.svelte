@@ -5,6 +5,7 @@
 	import ProjectDeleteDialog from "./ProjectDeleteDialog.svelte";
     import { pb, currentUser } from "@/pocketbase";
 	import type { RecordModel } from "pocketbase";
+	import { goto } from "$app/navigation";
 
     export let projects: RecordModel[]
     export let selectedProject: RecordModel | undefined
@@ -13,6 +14,7 @@
         try {
             await pb.collection('users').update($currentUser?.id, { selectedProject: projectId })
             selectedProject = projects.find((project) => project.id === projectId)
+            goto('/console/'+ selectedProject?.id)
         } catch (error) {
             console.error(error)
         }
@@ -25,7 +27,7 @@
         <p class="text-sm text-zinc-200">{selectedProject ? selectedProject?.name : 'Select a project'}</p>
     </Dialog.Trigger>
 
-    <Dialog.Content class="h-[400px] backdrop-blur-lg flex flex-row bg-transparent w-full">
+    <Dialog.Content class="h-[450px] backdrop-blur-lg flex flex-row bg-transparent w-full">
 
         <div class="flex flex-col basis-6/12">
             <div>
@@ -73,11 +75,11 @@
                     </div>
                     <div>
                         <p class="text-left text-sm text-zinc-600">Creation Date</p>
-                        {#if selectedProject?.created}
                         <div class="rounded-sm p-2 border my-2 text-xs">{new Date(selectedProject?.created).toLocaleDateString()}</div>
-                        {:else}
-                        <div class="rounded-sm p-2 border my-2 text-xs">'No Data'</div>
-                        {/if}
+                    </div>
+                    <div>
+                        <p class="text-left text-sm text-zinc-600">Project ID</p>
+                        <div class="rounded-sm p-2 border my-2 text-xs">{selectedProject?.id}</div>
                     </div>
                 </div>
                 <div class="flex flex-row space-x-2">
