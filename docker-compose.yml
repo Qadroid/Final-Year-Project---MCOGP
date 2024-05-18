@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  mcogp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - pocketbase
+
+  pocketbase:
+    image: pocketbase/pocketbase:latest
+    ports:
+      - "8090:8090"
+    volumes:
+      - pb_data:/pb_data
+      - ./pocketbase/pb_data:/pb_data/pb_data
+    command: ["serve", "--http=0.0.0.0:8090"]
+
+
+volumes:
+  pb_data:
