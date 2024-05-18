@@ -9,10 +9,10 @@ export const registerSchema = z.object({
     .refine(value => /\d/.test(value), { message: "Password must contain at least one number" })
     .refine(value => /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/.test(value), { message: "Password must contain at least one symbol" })
     .refine(value => /^[A-Za-z\d@$!%*?&]+$/g.test(value), { message: "Password contains illegal characters" }),
-    confirmPassword: z.string()
+    passwordConfirm: z.string()
     .min(1, { message: "Password confirmation is required" })
-}).superRefine(({ confirmPassword, password }, ctx) => {
-  if (confirmPassword !== password) {
+}).superRefine(({ passwordConfirm, password }, ctx) => {
+  if (passwordConfirm !== password) {
     ctx.addIssue({
       code: "custom",
       message: "Passwords do not match"

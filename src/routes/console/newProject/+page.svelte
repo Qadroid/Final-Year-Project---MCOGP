@@ -9,6 +9,7 @@
     import { Button } from '@/components/ui/button/';
     import { encode } from 'js-base64';
 	import { goto } from '$app/navigation';
+	import toast from 'svelte-french-toast';
 
     function yamlToBase64(yamlString: string): string {
       return encode(yamlString);
@@ -43,7 +44,7 @@
             console.error(error)
         }
         loading = false;
-        alert('Project created successfully')
+        toast.success('Project created successfully')
         goto('/console/')
     }
 </script>
@@ -90,11 +91,7 @@
                     {/if}
                 </Form.Control>
             </Form.Field>
-            {#if loading}
-                <Button on:click={handleCreateProject} disabled>Create Project</Button>
-            {:else}
-                <Button on:click={handleCreateProject}>Create Project</Button>
-            {/if}
+            <Button on:click={handleCreateProject} disabled={loading}>Create Project</Button>
         </form>
     </div>
 </div>

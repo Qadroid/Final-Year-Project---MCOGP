@@ -1,15 +1,77 @@
 <script lang="ts">
 	import * as Dialog from "@/components/ui/dialog";
 	import { Button, buttonVariants } from "@/components/ui/button";
+    import { pb } from "@/pocketbase";
+	import { onDestroy, onMount } from "svelte";
 	import { Plus } from "lucide-svelte";
+    import { currentUser } from "@/pocketbase";
 	import ProjectDeleteDialog from "./ProjectDeleteDialog.svelte";
-    import { projects, selectProject, selectedProject } from '@/stores/projects';
+
+    let projectList: any
+    let selectedProject: any = null;
+
+    onMount(async () => {
+        // Load projects
+		try {
+            loadProjects()
+			pb.collection("projects").subscribe('*', function (e) {
+                console.log('Projects updated:', e)
+				loadProjects();
+			});
+		} catch (error) {
+			console.error('Error loading projects:', error);
+		}
+
+        // Load current project
+        try {
+            loadSelectedProject()
+
+            pb.collection("users").subscribe('currentProject', function (e) {
+                loadSelectedProject();
+            })
+        } catch (error) {
+            console.error('Error loading current project:', error);
+        }
+	});
+
+	onDestroy(async () => {
+		await pb.collection("projects").unsubscribe();
+	});
+
+	async function loadProjects() {
+		try {
+			projectList = await pb.collection("projects").getFullList();
+		} catch (error) {
+			console.error('Error loading projects:', error);
+		}
+	}
+
+    async function loadSelectedProject() {
+        try {
+            if (!$currentUser) return console.error('User not found')
+            const selectProjectId = await pb.collection("users").getOne($currentUser.id, { expand: 'currentProject' })
+            selectedProject = await pb.collection("projects").getOne(selectProjectId.currentProject);
+        } catch (error) {
+            console.error('Error loading current project:', error);
+        }
+    }
+
+    async function selectProject(project: any) {
+        selectedProject = project;
+
+        const data = {
+            currentProject: project.id,
+        };
+        if (!$currentUser) return console.error('User not found')
+        const record = await pb.collection("users").update($currentUser.id, data);
+        console.log($currentUser.id, data, record)
+    }
 </script>
 
 <Dialog.Root>
-    <Dialog.Trigger class={buttonVariants({ variant: "outline" }) + " p-1 flex flex-col w-full"}>
-        <p class="text-xs text-zinc-400">Project:</p>
-        <p class="text-sm text-zinc-200">{$selectedProject ? $selectedProject?.name : 'Select a project'}</p>
+    <Dialog.Trigger class={buttonVariants({ variant: "outline" }) + " p-1 bg-zinc-900 flex flex-col w-full"}>
+        <p class="text-xs text-zinc-500">Project:</p>
+        <p class="text-sm text-zinc-400">{selectedProject ? selectedProject.name : 'Select a project'}</p>
     </Dialog.Trigger>
 
     <Dialog.Content class="h-[400px] backdrop-blur-lg flex flex-row bg-transparent w-full">
@@ -19,15 +81,15 @@
                 <p class="text-left pb-3 pl-3 text-zinc-400 text-lg font-bold">Projects</p>
             </div>
             <div class="p-2 rounded-md h-full border overflow-auto space-y-2">
-                {#if $projects.length === 0}
+                {#if projectList.length === 0}
                     <div class="flex flex-col items-center justify-center w-full h-full">
                         <p class="text-center text-sm text-zinc-500">No projects found</p>
                     </div>
                 {:else}
-                    {#each $projects as project}
+                    {#each projectList as project}
                         <Button
-                            on:click={selectProject(project.id)}
-                            class={`w-full p-2 text-left ${project.id === $selectedProject?.id ? 'bg-zinc-800 border-2 border-zinc-300' : ''}`}
+                            on:click={() => selectProject(project)}
+                            class={`w-full p-2 text-left ${project.id === selectedProject?.id ? 'bg-zinc-800 border-2 border-zinc-300' : ''}`}
                             variant="outline"
                         >
                             {project.name}
@@ -52,28 +114,20 @@
                 <div class="flex flex-col grow pt-7">
                     <div>
                         <p class="text-left text-sm text-zinc-600">Name</p>
-                        <div class="rounded-sm p-2 border my-2 text-xs">{$selectedProject?.name}</div>
+                        <div class="rounded-sm p-2 border my-2 text-xs">{selectedProject.name}</div>
                     </div>
                     <div>
                         <p class="text-left text-sm text-zinc-600">Description</p>
-                        <div class="rounded-sm p-2 border my-2 text-xs max-h-22 overflow-auto">{$selectedProject?.description}</div>
+                        <div class="rounded-sm p-2 border my-2 text-xs max-h-22 overflow-auto">{selectedProject.description}</div>
                     </div>
                     <div>
                         <p class="text-left text-sm text-zinc-600">Creation Date</p>
-                        {#if $selectedProject?.created}
-                        <div class="rounded-sm p-2 border my-2 text-xs">{new Date($selectedProject?.created).toLocaleDateString()}</div>
-                        {:else}
-                        <div class="rounded-sm p-2 border my-2 text-xs">'No Data'</div>
-                        {/if}
+                        <div class="rounded-sm p-2 border my-2 text-xs">{new Date(selectedProject.created).toLocaleDateString()}</div>
                     </div>
                 </div>
                 <div class="flex flex-row space-x-2">
                     <div class="flex grow"/>
-                    {#if $selectedProject?.id}
-                    <ProjectDeleteDialog selectedProjectId={$selectedProject?.id} />
-                    {:else}
-                    <ProjectDeleteDialog disabled={true} selectedProjectId={''} />
-                    {/if}
+                    <ProjectDeleteDialog selectedProjectId={selectedProject.id}/>
                     <Dialog.Close>
                         <Button variant="outline">Continue</Button>
                     </Dialog.Close>

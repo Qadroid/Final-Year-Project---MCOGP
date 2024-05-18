@@ -3,15 +3,8 @@
     import { Button, buttonVariants } from '@/components/ui/button/index'
 	import { Anchor, LogOut, Terminal } from 'lucide-svelte';
 	import { onMount } from 'svelte';
-	import { currentUser, pb } from '@/pocketbase';
 
-    async function handleSignOut() {
-        try {
-            pb.authStore.clear()
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    export let user
 
     // Menu items
     const menuItems: Map<string, string> = new Map([
@@ -30,7 +23,7 @@
 </script>
 
 <!-- Navbar -->
-<div class="flex justify-between w-full text-gray-300 items-center p-1 border-b backdrop-blur-2xl">
+<div class="flex justify-between w-full text-gray-300 items-center p-2 m-1 border rounded-xl backdrop-blur-2xl">
 
     <!-- Left side  -->
     <div class="flex items-center">
@@ -69,7 +62,7 @@
             <nav class="items-center flex">
                 {#each Array.from(menuItems) as [key, value]}
                     {#if value == '/'}
-                        <Button href={value} variant="ghost" class="h-10 p-2">
+                        <Button href={value} variant="ghost" class="h-10 p-2 mx-2">
                             <Anchor class="h-6 w-6" />
                         </Button>
                     {:else}
@@ -85,15 +78,17 @@
     <div class="flex space-x-2">
 
         <!-- If user is signed in -->
-        {#if $currentUser}
+        {#if user}
             <Button href="/console" variant="outline" class="h-10">
                 Console
                 <Terminal class="h-5 w-5 ml-2" />
             </Button>
-            <Button on:click={handleSignOut} variant="destructive" class="h-10">
-                Logout
-                <LogOut class="h-5 w-5 ml-2" />
-            </Button>
+            <form action="/logout" method="POST">
+                <Button type="submit" variant="destructive" class="h-10">
+                    Logout
+                    <LogOut class="h-5 w-5 ml-2" />
+                </Button>
+            </form>
         {:else}
             <Button href="/login" variant="outline" class="h-10">Login</Button>
             <Button href="/register" variant="outline" class="h-10">Register</Button>
