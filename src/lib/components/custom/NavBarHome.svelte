@@ -3,15 +3,8 @@
     import { Button, buttonVariants } from '@/components/ui/button/index'
 	import { Anchor, LogOut, Terminal } from 'lucide-svelte';
 	import { onMount } from 'svelte';
-	import { currentUser, pb } from '@/pocketbase';
 
-    async function handleSignOut() {
-        try {
-            pb.authStore.clear()
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    export let user
 
     // Menu items
     const menuItems: Map<string, string> = new Map([
@@ -85,15 +78,17 @@
     <div class="flex space-x-2">
 
         <!-- If user is signed in -->
-        {#if $currentUser}
+        {#if user}
             <Button href="/console" variant="outline" class="h-10">
                 Console
                 <Terminal class="h-5 w-5 ml-2" />
             </Button>
-            <Button on:click={handleSignOut} variant="destructive" class="h-10">
-                Logout
-                <LogOut class="h-5 w-5 ml-2" />
-            </Button>
+            <form action="/logout" method="POST">
+                <Button type="submit" variant="destructive" class="h-10">
+                    Logout
+                    <LogOut class="h-5 w-5 ml-2" />
+                </Button>
+            </form>
         {:else}
             <Button href="/login" variant="outline" class="h-10">Login</Button>
             <Button href="/register" variant="outline" class="h-10">Register</Button>
