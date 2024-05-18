@@ -36,7 +36,7 @@
 </script>
 
 
-<div class="flex-col flex min-h-screen w-64 bg-zinc-900 border-r">
+<div class="flex-col flex min-h-screen w-64 border-r">
     
     <!-- Top bound -->
     
@@ -46,7 +46,7 @@
         <div class="justify-between w-full">
             <div class="space-x-1 flex h-22 p-2 items-center">
                 <div>
-                  <Button class="w-10 h-10 p-2 bg-zinc-900 flex" variant="outline" href="/">
+                  <Button class="w-10 h-10 p-2 flex" variant="outline" href="/">
                     <Anchor />
                   </Button>
                 </div>
@@ -66,7 +66,7 @@
                     </div>
                     {#each section.sectionContent as button}
                         {#if ($page.url.pathname === "/console" + button.href)} 
-                            <Button class="w-full justify-start opacity-75 h-8 bg-zinc-300" variant="default" href="/console{button.href}">{button.title}</Button>
+                            <Button class="w-full justify-start opacity-75 h-8 bg-zinc-700 text-zinc-200" variant="secondary" href="/console{button.href}">{button.title}</Button>
                         {:else}
                             <Button class="w-full justify-start opacity-75 h-8" variant="ghost" href="/console{button.href}">{button.title}</Button>
                         {/if}
@@ -87,13 +87,13 @@
     <div class="h-14 p-1 border-t">
         <div class="flex justify-between w-full space-x-3 p-1">
             <div class="flex p-1">
-                <Button class="h-8 w-8 rounded-full bg-zinc-900" variant="outline" href='/console/account'>
+                <Button class="h-8 w-8 rounded-full" variant="outline" href='/console/account'>
                     <CircleUser />
                 </Button>
             </div>
             <div class="flex space-x-1">
-                <Button class="h-9 w-9 p-2 bg-zinc-900" variant="outline"><SettingsIcon /></Button>
-                <Button class="h-9 w-9 p-2 bg-zinc-900" variant="outline"><MessageCircle /></Button>
+                <Button class="h-9 w-9 p-2" variant="outline"><SettingsIcon /></Button>
+                <Button class="h-9 w-9 p-2" variant="outline"><MessageCircle /></Button>
             </div>
         </div>
     </div>

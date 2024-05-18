@@ -5,7 +5,7 @@
 <div class="w-screen h-screen">
 
     <!-- Top Navbar -->
-    <div class="flex w-screen min-w-full h-16 fixed"> 
+    <div class="flex w-screen min-w-full h-14 fixed"> 
         <NavBarHome />
     </div>
 
@@ -13,5 +13,4 @@
     <div class="h-full grow">
         <slot />
     </div>
-    
 </div>

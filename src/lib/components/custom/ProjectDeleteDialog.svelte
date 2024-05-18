@@ -3,20 +3,20 @@
     import { pb } from '@/pocketbase';
 	import Button from '@/components//ui/button/button.svelte';
 	import { TriangleAlert } from 'lucide-svelte';
+	import { redirect } from '@sveltejs/kit';
+	import { deleteProject } from '@/stores/projects';
 
     export let selectedProjectId: string
+    export let disabled: boolean  = false
     
-    async function deleteProject() {
-        await pb.collection('projects').delete(selectedProjectId);
-        const projects = pb.collection('projects').getFullList();
-        if ((await projects).length > 0) {
-            selectedProjectId = (await projects)[0].id;
-        }
+    async function handleDelete() {
+        deleteProject(selectedProjectId);
+        redirect(301, '/console');
     }
 </script>
 
 <Dialog.Root>
-    <Dialog.Trigger> 
+    <Dialog.Trigger {disabled}> 
         <Button variant="destructive">Delete Project</Button>
     </Dialog.Trigger>
     <Dialog.Content>
@@ -36,7 +36,7 @@
         <div>
             <Dialog.Close>
                 <Button variant="outline">Cancel</Button>
-                <Button on:click={deleteProject} variant="destructive">Delete</Button>
+                <Button on:click={handleDelete} variant="destructive">Delete</Button>
             </Dialog.Close>
         </div>
     </Dialog.Content>

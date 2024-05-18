@@ -30,7 +30,7 @@
 </script>
 
 <!-- Navbar -->
-<div class="flex justify-between w-full text-gray-300 items-center p-2 m-1 border rounded-xl backdrop-blur-2xl">
+<div class="flex justify-between w-full text-gray-300 items-center p-1 border-b backdrop-blur-2xl">
 
     <!-- Left side  -->
     <div class="flex items-center">
@@ -69,7 +69,7 @@
             <nav class="items-center flex">
                 {#each Array.from(menuItems) as [key, value]}
                     {#if value == '/'}
-                        <Button href={value} variant="ghost" class="h-10 p-2 mx-2">
+                        <Button href={value} variant="ghost" class="h-10 p-2">
                             <Anchor class="h-6 w-6" />
                         </Button>
                     {:else}

@@ -1,17 +1,11 @@
 <script lang="ts">
 	import ConsoleNavbar from '@/components/custom/ConsoleNavbar.svelte';
     import { onMount } from 'svelte';
-	import { getProjects, projects, selectedProject } from '@/stores/projects';
+	import { projects, selectedProject } from '@/stores/projects';
 	import Button from '@/components/ui/button/button.svelte';
     import { authState, currentUser } from '@/pocketbase';
 	import { goto } from '$app/navigation';
 	import { get } from 'svelte/store';
-
-    export function load() {
-        if (!get(currentUser)) {
-            goto('/login');
-        }
-    }
 </script>
 
 <div class="w-full h-full flex flex-row">
@@ -36,7 +30,9 @@
                     <Button class="" href="/console/newProject">create a new project</Button>
                 </div>
             {:else}
-                <slot />
+                <div>
+                    <slot />
+                </div>
              {/if}
         </div>
     </div>
