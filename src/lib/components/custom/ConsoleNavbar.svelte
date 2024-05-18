@@ -3,9 +3,7 @@
 	import { CircleUser, MessageCircle, SettingsIcon, Anchor } from "lucide-svelte"
     import Button from '@/components/ui/button/button.svelte'
 	import ProjectSwitcher from '@/components/custom/ProjectSwitcher.svelte';
-            
-    export let projects
-    export let selectedProject
+	import { selectedProject } from '@/stores/projects';
 
     // For content    
     const navItems = [
@@ -54,7 +52,7 @@
                   </Button>
                 </div>
                 <div class="w-full h-10 flex">
-                    <ProjectSwitcher {projects} {selectedProject} />
+                    <ProjectSwitcher/>
                 </div>
             </div>
         </div>
@@ -68,10 +66,10 @@
                         {section.sectionTitle}
                     </div>
                     {#each section.sectionContent as button}
-                        {#if ($page.url.pathname === "/console" + button.href)} 
-                            <Button class="w-full justify-start opacity-75 h-8 bg-zinc-700 text-zinc-200" variant="secondary" href="/console{button.href}">{button.title}</Button>
+                        {#if ($page.url.pathname === "/console/" + $selectedProject?.id + button.href)} 
+                            <Button class="w-full justify-start opacity-75 h-8 bg-zinc-700 text-zinc-200" variant="secondary" href="/console/{$selectedProject?.id}{button.href}">{button.title}</Button>
                         {:else}
-                            <Button class="w-full justify-start opacity-75 h-8" variant="ghost" href="/console{button.href}">{button.title}</Button>
+                            <Button class="w-full justify-start opacity-75 h-8" variant="ghost" href="/console/{$selectedProject?.id}{button.href}">{button.title}</Button>
                         {/if}
                     {/each}
                     <div id="separator">
