@@ -12,7 +12,8 @@
       superForm,
   } from "sveltekit-superforms";
   import { zodClient } from "sveltekit-superforms/adapters";
-	import { pb } from "@/pocketbase";
+
+  let loading = false;
 
   export let data: { loginForm: SuperValidated<Infer<LoginSchema>> }
 
@@ -20,24 +21,12 @@
       validators: zodClient(loginSchema)
   });
 
-  const { form: formData } = form;
-
-  async function handleLogin() {
-    try {
-      pb.collection("users").authWithPassword($formData.email, $formData.password);
-      console.log("Login successful");
-    } catch(error) {
-      console.error("Login failed");
-      console.error(error);
-    }
-  }
-  
-  
+  const { form: formData, enhance } = form;  
 </script>
 
 <p class="pb-8 text-xl font-bold">Login</p>
 
-<form>
+<form method="POST" use:enhance>
   <div class="space-y-1">
     <Form.Field {form} name="email">
       <Form.Control let:attrs>
@@ -56,6 +45,6 @@
       <Form.FieldErrors />
     </Form.Field>
   </div>
-  <Button on:click={handleLogin} >Login</Button>
+  <Button type="submit" disabled={loading}>Login</Button>
 </form>
   

@@ -1,12 +1,15 @@
 <script lang="ts">
 	import NavBarHome from '@/components/custom/NavBarHome.svelte';
+
+    export let data 
+    let { user } = data
 </script>
 
 <div class="w-screen h-screen">
 
     <!-- Top Navbar -->
     <div class="flex w-screen min-w-full h-16 fixed"> 
-        <NavBarHome />
+        <NavBarHome {user}/>
     </div>
 
     <!-- Content -->
