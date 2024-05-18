@@ -1,17 +1,19 @@
 <script lang="ts">
     import * as Dialog from '@/components/ui/dialog'
-    import { pb } from '@/pocketbase';
+    import { pb, currentUser } from '@/pocketbase';
 	import Button from '@/components//ui/button/button.svelte';
 	import { TriangleAlert } from 'lucide-svelte';
+	import { redirect } from '@sveltejs/kit';
 
     export let selectedProjectId: string
+    export let disabled: boolean = false
     
-    async function deleteProject() {
-        await pb.collection('projects').delete(selectedProjectId);
-        const projects = pb.collection('projects').getFullList();
-        if ((await projects).length > 0) {
-            selectedProjectId = (await projects)[0].id;
+    async function handleDelete() {
+        await pb.collection('projects').delete(selectedProjectId)
+        if (selectedProjectId === $currentUser?.selectedProject) {
+            await pb.collection('users').update($currentUser?.id, { selectedProject: null })
         }
+        redirect(303, '/console')
     }
 </script>
 

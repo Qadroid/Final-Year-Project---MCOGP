@@ -6,65 +6,17 @@
 	import { Plus } from "lucide-svelte";
     import { currentUser } from "@/pocketbase";
 	import ProjectDeleteDialog from "./ProjectDeleteDialog.svelte";
+    import { pb, currentUser } from "@/pocketbase";
+    import { projects, selectedProject } from "@/stores/projects";
 
-    let projectList: any
-    let selectedProject: any = null;
-
-    onMount(async () => {
-        // Load projects
-		try {
-            loadProjects()
-			pb.collection("projects").subscribe('*', function (e) {
-                console.log('Projects updated:', e)
-				loadProjects();
-			});
-		} catch (error) {
-			console.error('Error loading projects:', error);
-		}
-
-        // Load current project
+    async function selectProject(projectId: string) {
         try {
-            loadSelectedProject()
-
-            pb.collection("users").subscribe('currentProject', function (e) {
-                loadSelectedProject();
-            })
+            await pb.collection('users').update($currentUser?.id, { selectedProject: projectId })
+            selectedProject.set($projects.find((project) => project.id === projectId) || null)
+            // goto('/console/'+ selectedProject?.id)
         } catch (error) {
-            console.error('Error loading current project:', error);
+            console.error(error)
         }
-	});
-
-	onDestroy(async () => {
-		await pb.collection("projects").unsubscribe();
-	});
-
-	async function loadProjects() {
-		try {
-			projectList = await pb.collection("projects").getFullList();
-		} catch (error) {
-			console.error('Error loading projects:', error);
-		}
-	}
-
-    async function loadSelectedProject() {
-        try {
-            if (!$currentUser) return console.error('User not found')
-            const selectProjectId = await pb.collection("users").getOne($currentUser.id, { expand: 'currentProject' })
-            selectedProject = await pb.collection("projects").getOne(selectProjectId.currentProject);
-        } catch (error) {
-            console.error('Error loading current project:', error);
-        }
-    }
-
-    async function selectProject(project: any) {
-        selectedProject = project;
-
-        const data = {
-            currentProject: project.id,
-        };
-        if (!$currentUser) return console.error('User not found')
-        const record = await pb.collection("users").update($currentUser.id, data);
-        console.log($currentUser.id, data, record)
     }
 </script>
 
@@ -74,22 +26,22 @@
         <p class="text-sm text-zinc-400">{selectedProject ? selectedProject.name : 'Select a project'}</p>
     </Dialog.Trigger>
 
-    <Dialog.Content class="h-[400px] backdrop-blur-lg flex flex-row bg-transparent w-full">
+    <Dialog.Content class="h-[450px] backdrop-blur-lg flex flex-row bg-transparent w-full">
 
         <div class="flex flex-col basis-6/12">
             <div>
                 <p class="text-left pb-3 pl-3 text-zinc-400 text-lg font-bold">Projects</p>
             </div>
             <div class="p-2 rounded-md h-full border overflow-auto space-y-2">
-                {#if projectList.length === 0}
+                {#if !projects}
                     <div class="flex flex-col items-center justify-center w-full h-full">
                         <p class="text-center text-sm text-zinc-500">No projects found</p>
                     </div>
                 {:else}
-                    {#each projectList as project}
+                    {#each $projects as project (project.id)}
                         <Button
-                            on:click={() => selectProject(project)}
-                            class={`w-full p-2 text-left ${project.id === selectedProject?.id ? 'bg-zinc-800 border-2 border-zinc-300' : ''}`}
+                            on:click={() => selectProject(project.id)}
+                            class={`w-full p-2 text-left ${project.id === $selectedProject?.id ? 'bg-zinc-800 border-2 border-zinc-300' : ''}`}
                             variant="outline"
                         >
                             {project.name}
@@ -122,12 +74,16 @@
                     </div>
                     <div>
                         <p class="text-left text-sm text-zinc-600">Creation Date</p>
-                        <div class="rounded-sm p-2 border my-2 text-xs">{new Date(selectedProject.created).toLocaleDateString()}</div>
+                        <div class="rounded-sm p-2 border my-2 text-xs">{($selectedProject?.created && new Date($selectedProject?.created).toLocaleDateString()) || ''}</div>
+                    </div>
+                    <div>
+                        <p class="text-left text-sm text-zinc-600">Project ID</p>
+                        <div class="rounded-sm p-2 border my-2 text-xs">{$selectedProject?.id}</div>
                     </div>
                 </div>
                 <div class="flex flex-row space-x-2">
                     <div class="flex grow"/>
-                    <ProjectDeleteDialog selectedProjectId={selectedProject.id}/>
+                    <ProjectDeleteDialog disabled={!$selectedProject?.id} selectedProjectId={''} />
                     <Dialog.Close>
                         <Button variant="outline">Continue</Button>
                     </Dialog.Close>

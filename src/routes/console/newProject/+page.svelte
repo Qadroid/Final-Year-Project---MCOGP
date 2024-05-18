@@ -21,7 +21,7 @@
         validators: zodClient(projectSchema)
     });
 
-    const { form: formData, enhance } = form;
+    const { form: formData } = form;
 
     let loading = false;
 
