@@ -4,6 +4,9 @@
     import Button from '@/components/ui/button/button.svelte'
 	import ProjectSwitcher from '@/components/custom/ProjectSwitcher.svelte';
             
+    export let projects
+    export let selectedProject
+
     // For content    
     const navItems = [
         {
@@ -51,7 +54,7 @@
                   </Button>
                 </div>
                 <div class="w-full h-10 flex">
-                    <ProjectSwitcher />
+                    <ProjectSwitcher {projects} {selectedProject} />
                 </div>
             </div>
         </div>
