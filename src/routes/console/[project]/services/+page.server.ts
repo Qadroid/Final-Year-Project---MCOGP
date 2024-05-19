@@ -11,29 +11,21 @@ export const load: PageServerLoad = async () => {
         return kubeConfig.makeApiClient(k8s.CoreV1Api);
     }
 
-    function transformPodData(rawPods) {
-        return rawPods.map(pod => ({
-            name: pod.metadata.name,
-            namespace: pod.metadata.namespace,
-            phase: pod.status.phase,
-            podIP: pod.status.podIP,
-            startTime: pod.metadata.creationTimestamp,
+    function transformServiceData(rawServices) {
+        return rawServices.map(service => ({
+            name: service.metadata.name,
+            type: service.spec.type,
+            clusterIP: service.spec.clusterIP,
+            ports: service.spec.ports.map(port => `${port.port}/${port.protocol}`).join(', ')
         }));
     }
-    
-    let podListRaw
-    let podList
-    const k8sClient = getK8sClient(KUBECONFIG_BASE64);
 
-    try {
-        const podsRes = await k8sClient.listPodForAllNamespaces();
-        podListRaw = podsRes.body.items
-        podList = transformPodData(podListRaw)
-    } catch (err) {
-        console.error(err);
-    }
+    const k8sClient = getK8sClient(KUBECONFIG_BASE64);
+    const { body: { items: rawServices } } = await k8sClient.listNamespacedService('default'); // Adjust namespace if necessary
+
+    const services = transformServiceData(rawServices);
 
     return {
-        podList: podList
-    }
-}
+        services,
+    };
+};

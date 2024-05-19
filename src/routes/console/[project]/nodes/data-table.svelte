@@ -4,37 +4,28 @@
   import * as Table from "$lib/components/ui/table";
   import DataTableActions from './data-table-actions.svelte';
 
-  export let podList: pod[];
+  export let nodes: node[];
 
-  type pod = {
+  type node = {
     name: string,
-    namespace: string,
-    // containerID: string,
-    phase: string,
-    podIP: string,
-    startTime: string,
+    status: string,
+    age: number,
+    architecture: string,
+    kubeletVersion: string,
   }
 
   let table;
   let columns;
   let initialized = false;
 
-  table = createTable(readable(podList))
+  table = createTable(readable(nodes))
   
   columns = table.createColumns([
       table.column({ accessor: 'name', header: 'Name' }),
-      table.column({ accessor: 'namespace', header: 'Namespace' }),
-      // table.column({ accessor: 'containerID', header: 'Container ID' }),
-      table.column({ accessor: 'phase', header: 'Phase' }),
-      table.column({ accessor: 'podIP', header: 'Pod IP' }),
-      table.column({ 
-          accessor: 'startTime', 
-          header: 'Start Time', 
-          cell: ({ value }) => {
-              const formatted = new Date(value).toLocaleString();
-              return formatted 
-          } 
-      }),
+      table.column({ accessor: 'status', header: 'Status' }),
+      table.column({ accessor: 'age', header: 'Age (days)' }),
+      table.column({ accessor: 'architecture', header: 'Architecture' }),
+      table.column({ accessor: 'kubeletVersion', header: 'Kubelet Version' }),
       table.column({
         accessor: ({ name }) => name,
         header: '',
@@ -72,18 +63,7 @@
             {#each row.cells as cell (cell.id)}
               <Subscribe attrs={cell.attrs()} let:attrs>
                 <Table.Cell {...attrs}>
-                  {#if cell.id === "phase"}
-                      <div class="">
-                          <Render of={cell.render()} />
-                      </div>
-                  {:else if cell.id === "namespace"}
-                      <!-- Add link in the future to namespace -->
-                      <div class="">
-                          <Render of={cell.render()} />
-                      </div>
-                  {:else}
-                      <Render of={cell.render()} />
-                  {/if}
+                  <Render of={cell.render()} />
                 </Table.Cell>
               </Subscribe>
             {/each}

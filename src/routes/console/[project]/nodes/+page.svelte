@@ -5,18 +5,18 @@
 	import { selectedProject } from "@/stores/projects";
 
     export let data;
-    let { podList } = data
+    let { nodes } = data
 </script>
 
 <div class="px-8 pt-3 flex justify-between items-center">
-    <h1 class="text-4xl font-bold">Pods</h1>
-    <Button variant="outline" href="/console/{$selectedProject?.id}/pods/create">
-        Create Pod
+    <h1 class="text-4xl font-bold">Nodes</h1>
+    <Button variant="outline" href="/console/{$selectedProject?.id}/nodes/create">
+        Create Node
         <Plus class="h-5 w-5 ml-2" />
     </Button>
 </div>
 
 
 <div class="container mx-auto py-10">
-    <DataTable {podList} />
+    <DataTable {nodes} />
 </div>

@@ -2,11 +2,11 @@
     import Ellipsis from "lucide-svelte/icons/ellipsis";
     import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
     import { Button } from "$lib/components/ui/button";
+	import { selectedProject } from "@/stores/projects";
    
     export let id: string;
-    
-    async function handlePodDelete() {
-        const res = await fetch(`/api/pods/${id}`, {
+    async function handleVolumeDelete() {
+        const res = await fetch(`/api/volumes/${id}`, {
             method: "DELETE",
         });
     }
@@ -28,11 +28,11 @@
       <DropdownMenu.Group>
         <DropdownMenu.Label>Actions</DropdownMenu.Label>
         <DropdownMenu.Item on:click={() => navigator.clipboard.writeText(id)}>
-          Copy Pod Name
+          Copy Volume Name
         </DropdownMenu.Item>
       </DropdownMenu.Group>
       <DropdownMenu.Separator />
-      <DropdownMenu.Item on:click={handlePodDelete}>Delete Pod</DropdownMenu.Item>
-      <DropdownMenu.Item href="/console/admin/pods/${id}">View Pod details</DropdownMenu.Item>
+      <DropdownMenu.Item on:click={handleVolumeDelete}>Delete Volume</DropdownMenu.Item>
+      <DropdownMenu.Item href="/console/{$selectedProject?.id}/volumes/${id}">View Volume details</DropdownMenu.Item>
     </DropdownMenu.Content>
   </DropdownMenu.Root>

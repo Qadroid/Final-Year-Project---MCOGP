@@ -4,37 +4,28 @@
   import * as Table from "$lib/components/ui/table";
   import DataTableActions from './data-table-actions.svelte';
 
-  export let podList: pod[];
+  export let volumes: volume[];
 
-  type pod = {
+  type volume = {
     name: string,
-    namespace: string,
-    // containerID: string,
-    phase: string,
-    podIP: string,
-    startTime: string,
+    capacity: string,
+    accessModes: string,
+    storageClass: string,
+    status: string,
   }
 
   let table;
   let columns;
   let initialized = false;
 
-  table = createTable(readable(podList))
+  table = createTable(readable(volumes))
   
   columns = table.createColumns([
       table.column({ accessor: 'name', header: 'Name' }),
-      table.column({ accessor: 'namespace', header: 'Namespace' }),
-      // table.column({ accessor: 'containerID', header: 'Container ID' }),
-      table.column({ accessor: 'phase', header: 'Phase' }),
-      table.column({ accessor: 'podIP', header: 'Pod IP' }),
-      table.column({ 
-          accessor: 'startTime', 
-          header: 'Start Time', 
-          cell: ({ value }) => {
-              const formatted = new Date(value).toLocaleString();
-              return formatted 
-          } 
-      }),
+      table.column({ accessor: 'capacity', header: 'Capacity' }),
+      table.column({ accessor: 'accessModes', header: 'Access Modes' }),
+      table.column({ accessor: 'storageClass', header: 'Storage Class' }),
+      table.column({ accessor: 'status', header: 'Status' }),
       table.column({
         accessor: ({ name }) => name,
         header: '',
@@ -73,11 +64,6 @@
               <Subscribe attrs={cell.attrs()} let:attrs>
                 <Table.Cell {...attrs}>
                   {#if cell.id === "phase"}
-                      <div class="">
-                          <Render of={cell.render()} />
-                      </div>
-                  {:else if cell.id === "namespace"}
-                      <!-- Add link in the future to namespace -->
                       <div class="">
                           <Render of={cell.render()} />
                       </div>
