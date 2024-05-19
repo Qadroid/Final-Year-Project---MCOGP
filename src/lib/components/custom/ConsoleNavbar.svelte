@@ -30,10 +30,7 @@
                 { title: "Plan", href: "/plan" }
             ]    
         }    
-    ]    
-
-    let showModal: boolean = false
-    
+    ]        
 </script>
 
 

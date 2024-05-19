@@ -1,10 +1,5 @@
 <script lang="ts">
-	import { authState, pb } from "@/pocketbase";
-	import { redirect } from "@sveltejs/kit";
-
-    if ($authState) {
-        redirect(301, '/console');
-    }
+    
 </script>
 
 <div class="w-full h-full flex flex-col justify-center items-center">
