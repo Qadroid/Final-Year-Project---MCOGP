@@ -27,7 +27,7 @@
             sectionTitle: "Project",
             sectionContent: [
                 { title: "Nodes", href: "/nodes" },
-                { title: "Plan", href: "/plan" }
+                { title: "Namespaces", href: "/namespaces" }
             ]    
         }    
     ]        
