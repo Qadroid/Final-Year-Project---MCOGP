@@ -1,10 +1,7 @@
 <script lang="ts">
 	import * as Dialog from "@/components/ui/dialog";
 	import { Button, buttonVariants } from "@/components/ui/button";
-    import { pb } from "@/pocketbase";
-	import { onDestroy, onMount } from "svelte";
 	import { Plus } from "lucide-svelte";
-    import { currentUser } from "@/pocketbase";
 	import ProjectDeleteDialog from "./ProjectDeleteDialog.svelte";
     import { pb, currentUser } from "@/pocketbase";
     import { projects, selectedProject } from "@/stores/projects";
@@ -13,7 +10,6 @@
         try {
             await pb.collection('users').update($currentUser?.id, { selectedProject: projectId })
             selectedProject.set($projects.find((project) => project.id === projectId) || null)
-            // goto('/console/'+ selectedProject?.id)
         } catch (error) {
             console.error(error)
         }
@@ -21,9 +17,9 @@
 </script>
 
 <Dialog.Root>
-    <Dialog.Trigger class={buttonVariants({ variant: "outline" }) + " p-1 bg-zinc-900 flex flex-col w-full"}>
-        <p class="text-xs text-zinc-500">Project:</p>
-        <p class="text-sm text-zinc-400">{selectedProject ? selectedProject.name : 'Select a project'}</p>
+    <Dialog.Trigger class={buttonVariants({ variant: "outline" }) + " p-1 flex flex-col w-full"}>
+        <p class="text-xs text-zinc-400">Project:</p>
+        <p class="text-sm text-zinc-200">{$selectedProject ? $selectedProject?.name : 'Select a project'}</p>
     </Dialog.Trigger>
 
     <Dialog.Content class="h-[450px] backdrop-blur-lg flex flex-row bg-transparent w-full">
@@ -51,7 +47,7 @@
             </div>
             <div>
                 <Dialog.Close class="w-full">
-                    <Button href="/console/newProject" data-melt-dialog-close data-dialog-close class="w-full p-1 border border-zinc-500 mt-2" variant="outline">
+                    <Button href="/console/newProject" class="w-full p-1 border border-zinc-500 mt-2" variant="outline">
                         New Project
                         <Plus class="w-6 h-6 mx-1 border m-2 rounded-md"/>
                     </Button>
@@ -66,11 +62,11 @@
                 <div class="flex flex-col grow pt-7">
                     <div>
                         <p class="text-left text-sm text-zinc-600">Name</p>
-                        <div class="rounded-sm p-2 border my-2 text-xs">{selectedProject.name}</div>
+                        <div class="rounded-sm p-2 border my-2 text-xs">{$selectedProject?.name}</div>
                     </div>
                     <div>
                         <p class="text-left text-sm text-zinc-600">Description</p>
-                        <div class="rounded-sm p-2 border my-2 text-xs max-h-22 overflow-auto">{selectedProject.description}</div>
+                        <div class="rounded-sm p-2 border my-2 text-xs max-h-22 overflow-auto">{$selectedProject?.description}</div>
                     </div>
                     <div>
                         <p class="text-left text-sm text-zinc-600">Creation Date</p>
@@ -83,7 +79,7 @@
                 </div>
                 <div class="flex flex-row space-x-2">
                     <div class="flex grow"/>
-                    <ProjectDeleteDialog disabled={!$selectedProject?.id} selectedProjectId={''} />
+                    <ProjectDeleteDialog disabled={!$selectedProject?.id} />
                     <Dialog.Close>
                         <Button variant="outline">Continue</Button>
                     </Dialog.Close>

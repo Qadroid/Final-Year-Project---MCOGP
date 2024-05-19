@@ -3,22 +3,24 @@
     import { pb, currentUser } from '@/pocketbase';
 	import Button from '@/components//ui/button/button.svelte';
 	import { TriangleAlert } from 'lucide-svelte';
-	import { redirect } from '@sveltejs/kit';
+    import { selectedProject } from '@/stores/projects'
 
-    export let selectedProjectId: string
     export let disabled: boolean = false
-    
+    $: selectedProjectId = $selectedProject?.id
+
     async function handleDelete() {
+        if (!selectedProjectId) {
+            return console.error('No project selected')
+        }
         await pb.collection('projects').delete(selectedProjectId)
         if (selectedProjectId === $currentUser?.selectedProject) {
             await pb.collection('users').update($currentUser?.id, { selectedProject: null })
         }
-        redirect(303, '/console')
     }
 </script>
 
 <Dialog.Root>
-    <Dialog.Trigger> 
+    <Dialog.Trigger {disabled}> 
         <Button variant="destructive">Delete Project</Button>
     </Dialog.Trigger>
     <Dialog.Content>
@@ -38,7 +40,7 @@
         <div>
             <Dialog.Close>
                 <Button variant="outline">Cancel</Button>
-                <Button on:click={deleteProject} variant="destructive">Delete</Button>
+                <Button on:click={handleDelete} variant="destructive">Delete</Button>
             </Dialog.Close>
         </div>
     </Dialog.Content>
