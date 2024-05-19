@@ -3,17 +3,19 @@
     import { pb, currentUser } from '@/pocketbase';
 	import Button from '@/components//ui/button/button.svelte';
 	import { TriangleAlert } from 'lucide-svelte';
-	import { redirect } from '@sveltejs/kit';
+    import { selectedProject } from '@/stores/projects'
 
-    export let selectedProjectId: string
     export let disabled: boolean = false
-    
+    $: selectedProjectId = $selectedProject?.id
+
     async function handleDelete() {
+        if (!selectedProjectId) {
+            return console.error('No project selected')
+        }
         await pb.collection('projects').delete(selectedProjectId)
         if (selectedProjectId === $currentUser?.selectedProject) {
             await pb.collection('users').update($currentUser?.id, { selectedProject: null })
         }
-        redirect(303, '/console')
     }
 </script>
 

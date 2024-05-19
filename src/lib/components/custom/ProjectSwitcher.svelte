@@ -10,7 +10,6 @@
         try {
             await pb.collection('users').update($currentUser?.id, { selectedProject: projectId })
             selectedProject.set($projects.find((project) => project.id === projectId) || null)
-            // goto('/console/'+ selectedProject?.id)
         } catch (error) {
             console.error(error)
         }
@@ -48,7 +47,7 @@
             </div>
             <div>
                 <Dialog.Close class="w-full">
-                    <Button href="/console/newProject" data-melt-dialog-close data-dialog-close class="w-full p-1 border border-zinc-500 mt-2" variant="outline">
+                    <Button href="/console/newProject" class="w-full p-1 border border-zinc-500 mt-2" variant="outline">
                         New Project
                         <Plus class="w-6 h-6 mx-1 border m-2 rounded-md"/>
                     </Button>
@@ -80,7 +79,7 @@
                 </div>
                 <div class="flex flex-row space-x-2">
                     <div class="flex grow"/>
-                    <ProjectDeleteDialog disabled={!$selectedProject?.id} selectedProjectId={''} />
+                    <ProjectDeleteDialog disabled={!$selectedProject?.id} />
                     <Dialog.Close>
                         <Button variant="outline">Continue</Button>
                     </Dialog.Close>
