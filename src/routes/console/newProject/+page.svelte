@@ -83,13 +83,6 @@
                     <Form.FieldErrors />
                 </Form.Control>
             </Form.Field>
-            <Form.Field {form} name="owner">
-                <Form.Control>
-                    {#if $currentUser}
-                        <Input type="hidden" value={$formData.owner = $currentUser.id} readonly />
-                    {/if}
-                </Form.Control>
-            </Form.Field>
             {#if loading}
                 <Button on:click={handleCreateProject} disabled>Create Project</Button>
             {:else}
