@@ -79,6 +79,3 @@ Utility in-line styling as an alternative and/or companion to regular CSS. It ma
 
 ## Shadcn-Svelte
 A UI library ported from Shadcn which is built for NextJS and others. This fork has some of it's own unique features that provide good integration with Svelte, such as its form components. 
-
-# Even more info
-I will be detailing all this in much more detail in my dissertation. 
